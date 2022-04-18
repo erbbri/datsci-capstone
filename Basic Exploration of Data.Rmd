@@ -1,0 +1,159 @@
+---
+title: "Basic Exploration of Data"
+author: "Emily Bogle"
+date: "`r Sys.Date()`"
+output: openintro::lab_report
+---
+
+```{r load-packages, message=FALSE}
+library(tidyverse)
+library(openintro)
+library(ggplot2)
+```
+
+### Load Data
+
+Importing 2-year and 4-year college datasets. 
+
+```{r code1}
+two_year <- read_csv("Data_2-year_v5.csv")
+four_year <- read_csv("Data_4-year_v5.csv")
+View(two_year)
+View(four_year)
+```
+
+### Filtering Datasets as Needed
+
+Filtering datasets for building some initial visualizations in exploring the datasets. 
+
+```{r code2}
+two_year_WA <- filter(two_year, fips_ipeds=="Washington")
+four_year_WA <- filter(four_year, fips_ipeds=="Washington")
+
+two_year_WA_2017 <- filter(two_year_WA, year=="2017")
+four_year_WA_2017 <- filter(four_year_WA, year=="2017")
+
+two_year_WA_2017_mkt <- pivot_longer(two_year_WA_2017, cols=c(mkt_white, mkt_hispa, mkt_black, mkt_asian, mkt_amind, mkt_pacis, mkt_twora), names_to="Market", values_to="MarketPercent")
+
+four_year_WA_2017_mkt <- pivot_longer(four_year_WA_2017, cols=c(mkt_white, mkt_hispa, mkt_black, mkt_asian, mkt_amind, mkt_pacis, mkt_twora), names_to="Market", values_to="MarketPercent")
+
+two_year_2017 <- filter(two_year, year=="2017")
+four_year_2017 <- filter(four_year, year=="2017")
+
+spu <- filter(four_year, inst_name=="Seattle Pacific University")
+spu_2017 <- filter(spu, year=="2017")
+
+spu_mkt <-pivot_longer(spu, cols=c(mkt_white, mkt_hispa, mkt_black, mkt_asian, mkt_amind, mkt_pacis, mkt_twora), names_to="Market", values_to="MarketPercent")
+
+spu_colrep <-pivot_longer(spu, cols=c(col_white, col_hispa, col_black, col_asian, col_amind, col_pacis, col_twora), names_to="RaceRep", values_to="CollegePercent")
+```
+
+### Comparative Vertical Boxplots for Washington Schools 2017 (White and Black Representation)
+
+Interesting trend of under-representation of black students in four-year Washington "private more-selective" colleges in 2017. 
+Interesting trend of under-representation of white students in all almost all two-year Washington colleges.
+
+```{r code3}
+ggplot(two_year_WA_2017, aes(x= inst_name, y= dif_black, fill=twocat))+
+  geom_histogram(stat = "identity")+
+  coord_flip()+
+  labs(title="Black Representaion in Washington \nTwo-Year Colleges 2017",
+         y = "College Representation of Black Population 2017 \n(College Percent minus Market Percent)",
+         x = "College Institution",
+       fill="Instutional Category")
+
+ggplot(two_year_WA_2017, aes(x= inst_name, y= dif_white, fill=twocat))+
+  geom_histogram(stat = "identity")+
+  coord_flip()+
+  labs(title="White Representaion in Washington \nTwo-Year Colleges 2017",
+         y = "College Representation of Black Population 2017 \n(College Percent minus Market Percent)",
+         x = "College Institution",
+       fill="Institutional Category")
+
+ggplot(four_year_WA_2017, aes(x= inst_name, y= dif_black, fill=fourcat))+
+  geom_histogram(stat = "identity")+
+  coord_flip()+
+  labs(title="Black Representaion in Washington \nFour-Year Colleges 2017",
+         y = "College Representation of White Population 2017 \n(College Percent minus Market Percent)",
+         x = "College Institution",
+       fill="Institutional Category")
+
+ggplot(four_year_WA_2017, aes(x= inst_name, y= dif_white, fill=fourcat))+
+  geom_histogram(stat = "identity")+
+  coord_flip()+
+  labs(title="White Representaion in Washington \nFour-Year Colleges 2017",
+         y = "College Representation of White Population 2017 \n(College Percent minus Market Percent)",
+         x = "College Institution",
+       fill="Institutional Category")
+```
+
+### Comparative Vertical Boxplots for Washington Market Percentages 2017 
+
+Spokane has comparatively higher white market percentage.
+Biggest variation in market percent seems to be for black students in four year colleges 2017.
+More variation in market percents for two-year WA colleges than four-year.
+
+```{r code4}
+ggplot(two_year_WA_2017_mkt, aes(x= inst_name, y= MarketPercent, fill= Market))+
+  geom_histogram(stat = "identity")+
+  coord_flip()+
+  labs(title="College Market in Washington \nTwo-Year Colleges 2017",
+         y = "College Market Percentages 2017",
+         x = "College Institution")
+
+ggplot(four_year_WA_2017_mkt, aes(x= inst_name, y= MarketPercent, fill= Market))+
+  geom_histogram(stat = "identity")+
+  coord_flip()+
+  labs(title="College Market in Washington \nFour-Year Colleges 2017",
+         y = "College Market Percentages 2017",
+         x = "College Institution")
+```
+
+### Exploring Institution Category Counts over the Years
+
+```{r code6}
+ggplot(two_year, aes(x= twocat, fill=twocat))+
+  geom_bar()+
+  facet_grid(~year)+
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())+
+  labs(title="College Two-year Insitution Category Counts",
+         y = "Counts",
+         x = "College Institution Category",
+         fill= "Institution Category")
+
+ggplot(four_year, aes(x= fourcat, fill=fourcat))+
+  geom_bar()+
+  facet_grid(~year)+
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())+
+  labs(title="College Four-year Insitution Category Counts",
+         y = "Counts",
+         x = "College Institution Category",
+         fill= "Institution Category")
+
+```
+
+### Exploring SPU Data
+
+```{r code8}
+ggplot(spu_mkt, aes(x= Market, y=MarketPercent, fill=Market))+
+  geom_histogram(stat="identity")+
+  facet_grid(~year)+
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())+
+  labs(title="SPU College Market Percents over the Years",
+         y = "Market Percents",
+         x = "Market Race",
+         fill= "Market Race")
+
+ggplot(spu_colrep, aes(x= RaceRep, y=CollegePercent, fill=RaceRep))+
+  geom_histogram(stat="identity")+
+  facet_grid(~year)+
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())+
+  labs(title="SPU College Enrolled Percents over the Years",
+         y = "College Percents",
+         x = "College Race",
+         fill= "College Race")
+```
