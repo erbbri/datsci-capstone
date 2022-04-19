@@ -70,6 +70,12 @@ spu_lm_slope <- spu %>% group_by(year) %>%
 Practice writing metric fucntions for two school.
 
 ```{r code-2}
+
+spu_UW_clean <- spu_UW %>%
+                          select(year, inst_name, dif_white, dif_amind, dif_asian, dif_black,
+                                 dif_pacis, dif_twora, dif_hispa) %>%
+                                  pivot_wider(id_cols=year, names_from = () )
+
 spu_UW_mag_diff <- spu_UW %>% 
                           group_by(year) %>%
                           group_by(inst_name) %>%
