@@ -1,0 +1,57 @@
+---
+title: "Lab Name"
+author: "Sagma Prajapati"
+date: "`r Sys.Date()`"
+output: openintro::lab_report
+---
+
+```{r load-packages, message=FALSE}
+library(tidyverse)
+library(openintro)
+library(ggplot2)
+```
+
+### Load Data
+
+Importing  4-year college data sets. 
+
+```{r }
+four_year <- read.csv("urban4.csv")
+view(four_year)
+```
+
+### Black and Hispanic students are underrepresented at more selective universities.
+
+Filtering data sets to get More selective public and More selective private universities. 
+
+```{r}
+four_year_moreSelective <- subset(four_year,fourcat == "Public More Selective" | fourcat == "Private More Selective")
+
+four_year_moreSelective_2017 <- subset(four_year_moreSelective, year == "2017")
+view(four_year_moreSelective_2017)
+
+four_year_moreSelective_2017_avg <- four_year_moreSelective_2017  %>%
+  group_by(fourcat) %>%
+  summarize(
+    White= mean(dif_white),
+    Hispanic = mean(dif_hispa),
+    Black = mean(dif_black),
+    Asian = mean(dif_asian),
+    American_Indian = mean(dif_amind),
+    Pacific_Islander = mean(dif_pacis),
+   Multiracial = mean(dif_twora)
+  )
+four_year_moreSelective_2017_avg
+
+colleges_2017 <-pivot_longer(four_year_moreSelective_2017_avg, cols=c(White,Hispanic, Black, Asian,  American_Indian,  Pacific_Islander, Multiracial), names_to="Race", values_to="Average_dif")
+
+ggplot(colleges_2017, aes(fill= fourcat , y = Average_dif, x = Race))+
+  geom_bar(position = "dodge", stat="identity") +
+  labs(title="Racial Representaion of Four-Year Colleges in 2017",
+         y = "Average (College Percent minus Market Percent)",
+         x = "Race",
+       fill="Institutional Category")
+ 
+```
+
+
