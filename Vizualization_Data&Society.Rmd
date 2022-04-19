@@ -16,7 +16,7 @@ library(ggplot2)
 Importing  4-year college data sets. 
 
 ```{r }
-four_year <- read.csv("urban4.csv")
+four_year <- read.csv("CollegeData_4-year.csv")
 view(four_year)
 ```
 
