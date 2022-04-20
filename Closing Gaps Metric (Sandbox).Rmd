@@ -18,8 +18,8 @@ Importing 2-year and 4-year college datasets.
 Subsetting four_year to only include SPU info for practicing metric methods with one school.
 
 ```{r code-1}
-two_year <- read_csv("Data_2-year_v5.csv")
-four_year <- read_csv("Data_4-year_v5.csv")
+two_year <- read_csv("CollegeData_2-year.csv")
+four_year <- read_csv("CollegeData_4-year.csv")
 View(two_year)
 View(four_year)
 
@@ -70,11 +70,9 @@ spu_lm_slope <- spu %>% group_by(year) %>%
 Practice writing metric fucntions for two school.
 
 ```{r code-2}
-
 spu_UW_clean <- spu_UW %>%
                           select(year, inst_name, dif_white, dif_amind, dif_asian, dif_black,
-                                 dif_pacis, dif_twora, dif_hispa) %>%
-                                  pivot_wider(id_cols=year, names_from = () )
+                                 dif_pacis, dif_twora, dif_hispa)
 
 spu_UW_mag_diff <- spu_UW %>% 
                           group_by(year) %>%
