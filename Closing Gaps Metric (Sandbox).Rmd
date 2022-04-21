@@ -42,9 +42,10 @@ spu_mag_diff <- spu_clean %>%
                   mutate(mag_diff = sum(abs(dif_white), abs(dif_hispa), abs(dif_black),
                                             abs(dif_asian), abs(dif_amind), abs(dif_pacis),
                                             abs(dif_twora), na.rm = T)) %>%
-                  mutate(missing_racial_data = is.na(dif_white) + is.na(abs(dif_hispa)) + is.na(abs(dif_black))
-                                            + is.na(abs(dif_asian)) + is.na(abs(dif_amind)) + is.na(abs(dif_pacis))
-                                             + is.na(abs(dif_twora))) %>%
+                  mutate(missing_racial_data = is.na(dif_white) + is.na(abs(dif_hispa)) 
+                                              + is.na(abs(dif_black)) + is.na(abs(dif_asian)) 
+                                              + is.na(abs(dif_amind)) + is.na(abs(dif_pacis))
+                                              + is.na(abs(dif_twora))) %>%
                   mutate(missing_racial_data = as.character(missing_racial_data))
 
                   
@@ -114,9 +115,7 @@ final <- spu_UW_mag_diff %>%
                   group_by(inst_name) %>%
                   do(linmod = lm( year ~ mag_diff, data = .)) %>%
                   rowwise () %>%
-                  mutate(slope = linmod$coefficients[2])
-
-
-
+                  mutate(slope = linmod$coefficients[2]) %>%
+                  arrange(slope)
 ```
 
