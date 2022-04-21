@@ -12,28 +12,64 @@ library(ggplot2)
 library(dplyr)
 ```
 
-### Import Data
-
-Insert any text here.
+### Import, Filter, and Mutate Data
 
 ```{r code1}
 two_year <- read_csv("CollegeData_2-year.csv")
 four_year <- read_csv("CollegeData_4-year.csv")
 View(two_year)
 View(four_year)
+
+four_year_clean <- four_year %>%
+                  select(year, inst_name, dif_white, dif_amind, dif_asian, dif_black,
+                        dif_pacis, dif_twora, dif_hispa)
+
+two_year_clean <- four_year %>%
+                  select(year, inst_name, dif_white, dif_amind, dif_asian, dif_black,
+                        dif_pacis, dif_twora, dif_hispa)
+
+four_year_mag_diff <- four_year_clean %>%
+                  rowwise () %>%
+                  mutate(mag_diff = sum(abs(dif_white), abs(dif_hispa), abs(dif_black),
+                                            abs(dif_asian), abs(dif_amind), abs(dif_pacis),
+                                            abs(dif_twora), na.rm = T)) %>%
+                  mutate(missing_racial_data = is.na(dif_white) + is.na(abs(dif_hispa)) 
+                                              + is.na(abs(dif_black)) + is.na(abs(dif_asian)) 
+                                              + is.na(abs(dif_amind)) + is.na(abs(dif_pacis))
+                                              + is.na(abs(dif_twora))) %>%
+                  mutate(missing_racial_data = as.character(missing_racial_data))
+
+two_year_mag_diff <- two_year_clean %>%
+                  rowwise () %>%
+                  mutate(mag_diff = sum(abs(dif_white), abs(dif_hispa), abs(dif_black),
+                                            abs(dif_asian), abs(dif_amind), abs(dif_pacis),
+                                            abs(dif_twora), na.rm = T)) %>%
+                  mutate(missing_racial_data = is.na(dif_white) + is.na(abs(dif_hispa)) 
+                                              + is.na(abs(dif_black)) + is.na(abs(dif_asian)) 
+                                              + is.na(abs(dif_amind)) + is.na(abs(dif_pacis))
+                                              + is.na(abs(dif_twora))) %>%
+                  mutate(missing_racial_data = as.character(missing_racial_data))
 ```
 
 ### Line of Best Fit Using Diff Magnitudes
 
-Insert any text here.
-
 ```{r code2}
-# Insert code for Exercise 1 here
+four_year_final <- four_year_mag_diff %>%   
+                  group_by(inst_name) %>%
+                  do(linmod = lm( year ~ mag_diff, data = .)) %>%
+                  rowwise () %>%
+                  mutate(slope = linmod$coefficients[2]) %>%
+                  arrange(slope)
+
+two_year_final <- two_year_mag_diff %>%   
+                  group_by(inst_name) %>%
+                  do(linmod = lm( year ~ mag_diff, data = .)) %>%
+                  rowwise () %>%
+                  mutate(slope = linmod$coefficients[2]) %>%
+                  arrange(slope)
 ```
 
 ### Line of Best Fit Using (sqrt) Mean of Squared Differences 
-
-Insert any text here.
 
 ```{r code3}
 # Insert code for Exercise 1 here
