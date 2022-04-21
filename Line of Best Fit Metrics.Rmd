@@ -17,8 +17,6 @@ library(dplyr)
 ```{r code1}
 two_year <- read_csv("CollegeData_2-year.csv")
 four_year <- read_csv("CollegeData_4-year.csv")
-View(two_year)
-View(four_year)
 
 four_year_clean <- four_year %>%
                   select(year, inst_name, dif_white, dif_amind, dif_asian, dif_black,
@@ -28,22 +26,30 @@ two_year_clean <- four_year %>%
                   select(year, inst_name, dif_white, dif_amind, dif_asian, dif_black,
                         dif_pacis, dif_twora, dif_hispa)
 
-four_year_mag_diff <- four_year_clean %>%
+four_year_md_smsd <- four_year_clean %>%
                   rowwise () %>%
                   mutate(mag_diff = sum(abs(dif_white), abs(dif_hispa), abs(dif_black),
                                             abs(dif_asian), abs(dif_amind), abs(dif_pacis),
                                             abs(dif_twora), na.rm = T)) %>%
+                  mutate(se = sum((dif_white)^2, (dif_hispa)^2, (dif_black)^2, 
+                              (dif_asian)^2, (dif_amind)^2, (dif_pacis)^2,
+                              (dif_twora)^2, na.rm = T)) %>%
+                  mutate(smsd = sqrt(1/7*se)) %>%
                   mutate(missing_racial_data = is.na(dif_white) + is.na(abs(dif_hispa)) 
                                               + is.na(abs(dif_black)) + is.na(abs(dif_asian)) 
                                               + is.na(abs(dif_amind)) + is.na(abs(dif_pacis))
                                               + is.na(abs(dif_twora))) %>%
                   mutate(missing_racial_data = as.character(missing_racial_data))
 
-two_year_mag_diff <- two_year_clean %>%
+two_year_md_smsd <- two_year_clean %>%
                   rowwise () %>%
                   mutate(mag_diff = sum(abs(dif_white), abs(dif_hispa), abs(dif_black),
                                             abs(dif_asian), abs(dif_amind), abs(dif_pacis),
                                             abs(dif_twora), na.rm = T)) %>%
+                  mutate(se = sum((dif_white)^2, (dif_hispa)^2, (dif_black)^2, 
+                              (dif_asian)^2, (dif_amind)^2, (dif_pacis)^2,
+                              (dif_twora)^2, na.rm = T)) %>%
+                  mutate(smsd = sqrt(1/7*se)) %>%
                   mutate(missing_racial_data = is.na(dif_white) + is.na(abs(dif_hispa)) 
                                               + is.na(abs(dif_black)) + is.na(abs(dif_asian)) 
                                               + is.na(abs(dif_amind)) + is.na(abs(dif_pacis))
@@ -54,14 +60,14 @@ two_year_mag_diff <- two_year_clean %>%
 ### Line of Best Fit Using Diff Magnitudes
 
 ```{r code2}
-four_year_final <- four_year_mag_diff %>%   
+four_year_final_md <- four_year_md_smsd %>%   
                   group_by(inst_name) %>%
                   do(linmod = lm( year ~ mag_diff, data = .)) %>%
                   rowwise () %>%
                   mutate(slope = linmod$coefficients[2]) %>%
                   arrange(slope)
 
-two_year_final <- two_year_mag_diff %>%   
+two_year_final_md <- two_year_md_smsd %>%   
                   group_by(inst_name) %>%
                   do(linmod = lm( year ~ mag_diff, data = .)) %>%
                   rowwise () %>%
@@ -72,6 +78,18 @@ two_year_final <- two_year_mag_diff %>%
 ### Line of Best Fit Using (sqrt) Mean of Squared Differences 
 
 ```{r code3}
-# Insert code for Exercise 1 here
+four_year_final_smsd <- four_year_md_smsd %>%   
+                     group_by(inst_name) %>%
+                     do(linmod = lm( year ~ smsd, data = .)) %>%
+                     rowwise () %>%
+                     mutate(slope = linmod$coefficients[2]) %>%
+                     arrange(slope)
+
+two_year_final_smsd <- two_year_md_smsd %>%   
+                    group_by(inst_name) %>%
+                    do(linmod = lm( year ~ smsd, data = .)) %>%
+                    rowwise () %>%
+                    mutate(slope = linmod$coefficients[2]) %>%
+                    arrange(slope)
 ```
 
