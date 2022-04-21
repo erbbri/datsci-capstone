@@ -26,6 +26,7 @@ two_year_clean <- four_year %>%
                   select(year, inst_name, dif_white, dif_amind, dif_asian, dif_black,
                         dif_pacis, dif_twora, dif_hispa)
 
+#NOTE: this will take a second to complete, green bar is good!, wait until it disappears 
 four_year_md_smsd <- four_year_clean %>%
                   rowwise () %>%
                   mutate(mag_diff = sum(abs(dif_white), abs(dif_hispa), abs(dif_black),
@@ -41,6 +42,7 @@ four_year_md_smsd <- four_year_clean %>%
                                               + is.na(abs(dif_twora))) %>%
                   mutate(missing_racial_data = as.character(missing_racial_data))
 
+#NOTE: this will take a second to complete, green bar is good!, wait until it disappears 
 two_year_md_smsd <- two_year_clean %>%
                   rowwise () %>%
                   mutate(mag_diff = sum(abs(dif_white), abs(dif_hispa), abs(dif_black),

@@ -48,7 +48,6 @@ spu_mag_diff <- spu_clean %>%
                                               + is.na(abs(dif_twora))) %>%
                   mutate(missing_racial_data = as.character(missing_racial_data))
 
-                  
 ggplot(data = spu_mag_diff) +
   geom_point(mapping=aes(x=year, y=mag_diff, color=missing_racial_data)) +
   geom_smooth(mapping=aes(x=year, y=mag_diff), method = 'lm') +

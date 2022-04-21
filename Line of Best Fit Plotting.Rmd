@@ -84,5 +84,15 @@ ggplot(data = SPU_mag_diff) +
 This code can be used with any institution. I have sample code below for SPU. Make necessary substitutions to look at other individual schools. 
 
 ```{r code2}
+#Subset data to given school of interest
+SPU_smsd <- four_year_md_smsd %>%
+                      filter(inst_name == "Seattle Pacific University")
 
+##Make individual plots for any given school's data
+ggplot(data = SPU_smsd) +
+  geom_point(mapping=aes(x=year, y=smsd)) +
+  geom_smooth(mapping=aes(x=year, y=smsd), method = 'lm') +
+  labs(title = "Total Magnitudes of Racial Representative Differnces (SPU)",
+       x = "Years", y= "Total Magnitued of Racial Difference Percentages") +
+       scale_x_continuous(breaks=seq(2009,2017,by=1))
 ```
