@@ -1,6 +1,6 @@
 ---
 title: "Closing Gaps Metric (Sandbox)"
-author: "Emily Bogle"
+author: "Emily Bogle" 
 date: "`r Sys.Date()`"
 output: openintro::lab_report
 ---
