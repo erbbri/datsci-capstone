@@ -1,0 +1,41 @@
+---
+title: "Ideal Line Regression Metrics"
+author: "Emily Bogle"
+date: "`r Sys.Date()`"
+output: openintro::lab_report
+---
+
+```{r load-packages, message=FALSE}
+library(tidyverse)
+library(openintro)
+library(ggplot2)
+library(dplyr)
+```
+
+### Import Data
+
+Insert any text here.
+
+```{r code1}
+two_year <- read_csv("CollegeData_2-year.csv")
+four_year <- read_csv("CollegeData_4-year.csv")
+View(two_year)
+View(four_year)
+```
+
+### Line of Best Fit Using Diff Magnitudes
+
+Insert any text here.
+
+```{r code2}
+# Insert code for Exercise 1 here
+```
+
+### Line of Best Fit Using (sqrt) Mean of Squared Differences 
+
+Insert any text here.
+
+```{r code3}
+# Insert code for Exercise 1 here
+```
+
