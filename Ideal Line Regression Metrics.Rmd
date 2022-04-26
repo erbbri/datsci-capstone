@@ -90,6 +90,33 @@ md_high_hinge <- mean(two_year_md_high_hinge$mag_diff, na.rm = T)
 smsd_low_hinge <- mean(two_year_smsd_low_hinge$smsd, na.rm = T) 
 smsd_high_hinge <- mean(two_year_smsd_high_hinge$smsd, na.rm = T) 
 
+year <- c(1,9)
+md_hinge <- c(md_high_hinge, md_low_hinge)
+smsd_hinge <- c(smsd_high_hinge,smsd_low_hinge)
+
+df <- data.frame (year, md_hinge, smsd_hinge)
+
+ggplot(data = df, aes(x=year, y=md_hinge)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula= (y ~ exp(-x)), se=FALSE, linetype = 1) +
+  labs(title = "Ideal Exponential Line through Avg. High & Low Magnitude Differences",
+       x = "Years Since 2008", y= "Total of Magnitude Difference Percentages") +
+       scale_x_continuous(breaks=seq(1,9,by=1))
+
+ggplot(data = df, aes(x=year, y=smsd_hinge)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula= (y ~ exp(-x)), se=FALSE, linetype = 1) +
+  labs(title = "Ideal Exponential Line through Avg. High & Low Square Root of 
+       Mean of Squared Differences",
+       x = "Years Since 2008", y= "Square Root of Mean of Squared Differences Percentages") +
+       scale_x_continuous(breaks=seq(1,9,by=1))
+
+four_yearedit_md_smsd <- four_year_md_smsd %>%
+                        mutate(yearedit = year-2008)
+
+two_yearedit_md_smsd <- two_year_md_smsd %>%
+                        mutate(yearedit = year-2008)
+
 
 ```
 
@@ -98,7 +125,7 @@ smsd_high_hinge <- mean(two_year_smsd_high_hinge$smsd, na.rm = T)
 Insert any text here.
 
 ```{r code3}
-# Insert code for Exercise 1 here
+
 ```
 
 ### Ideal Line with Regression Analysis Metric (Diff Magnitudes)(Exponential)
@@ -106,7 +133,7 @@ Insert any text here.
 Insert any text here.
 
 ```{r code4}
-# Insert code for Exercise 1 here
+fy_il_dm_ex <-
 ```
 
 ### Ideal Line with Regression Analysis Metric (sqrt-Mean of Squared Differences)(Quadratic)
