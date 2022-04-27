@@ -24,7 +24,7 @@ four_year_clean <- four_year %>%
                   select(year, inst_name, dif_white, dif_amind, dif_asian, dif_black,
                         dif_pacis, dif_twora, dif_hispa)
 
-two_year_clean <- four_year %>%
+two_year_clean <- two_year %>%
                   select(year, inst_name, dif_white, dif_amind, dif_asian, dif_black,
                         dif_pacis, dif_twora, dif_hispa)
 
