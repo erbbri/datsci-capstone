@@ -24,7 +24,7 @@ four_year_clean <- four_year %>%
                   select(year, inst_name, dif_white, dif_amind, dif_asian, dif_black,
                         dif_pacis, dif_twora, dif_hispa)
 
-two_year_clean <- four_year %>%
+two_year_clean <- two_year %>%
                   select(year, inst_name, dif_white, dif_amind, dif_asian, dif_black,
                         dif_pacis, dif_twora, dif_hispa)
 
@@ -73,7 +73,7 @@ SPU_mag_diff <- four_year_md_smsd %>%
 ggplot(data = SPU_mag_diff) +
   geom_point(mapping=aes(x=year, y=mag_diff)) +
   geom_smooth(mapping=aes(x=year, y=mag_diff), method = 'lm') +
-  labs(title = "Total Magnitudes of Racial Representative Differnces (SPU)",
+  labs(title = "Total Magnitudes of Racial Representative Differences (SPU)",
        x = "Years", y= "Total Magnitued of Racial Difference Percentages") +
        scale_x_continuous(breaks=seq(2009,2017,by=1))
 ```
@@ -92,7 +92,7 @@ SPU_smsd <- four_year_md_smsd %>%
 ggplot(data = SPU_smsd) +
   geom_point(mapping=aes(x=year, y=smsd)) +
   geom_smooth(mapping=aes(x=year, y=smsd), method = 'lm') +
-  labs(title = "Total Magnitudes of Racial Representative Differnces (SPU)",
+  labs(title = "Total Magnitudes of Racial Representative Differences (SPU)",
        x = "Years", y= "Total Magnitued of Racial Difference Percentages") +
        scale_x_continuous(breaks=seq(2009,2017,by=1))
 ```
