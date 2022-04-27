@@ -44,9 +44,13 @@ two_year_md_smsd <- two_year_clean %>%
          + is.na(abs(dif_twora))) %>%
   mutate(missing_racial_data = as.character(missing_racial_data))
 
-UW_mag_diff <- four_year_md_smsd %>%
-  filter(inst_name == "University of Washington-Seattle Campus")
+
 ##Make individual plots for any given school's data
+SPU_mag_diff <- four_year_md_smsd %>%
+  filter(inst_name == "Seattle Pacific University")
+SPU_smsd <- four_year_md_smsd %>%
+  filter(inst_name == "Seattle Pacific University")
+
 
 theme_set(theme_minimal())
 theme_update(text = element_text(family = "Arial", color = "black", size = 12))
@@ -91,8 +95,13 @@ ggplot(data = SPU_smsd) +
         axis.title.y = element_markdown(),
         axis.title.x = element_markdown())
 
-#University of Washinton
+#University of Washington
 theme_update(plot.subtitle = element_text(hjust = 0.5, size = 13, color = '#4b2e83'))
+
+UW_mag_diff <- four_year_md_smsd %>%
+  filter(inst_name == "University of Washington-Seattle Campus")
+UW_smsd <- four_year_md_smsd %>%
+  filter(inst_name == "University of Washington-Seattle Campus")
 
 ggplot(data = UW_mag_diff) +
   geom_point(mapping=aes(x=year, y=mag_diff)) +
@@ -111,9 +120,6 @@ ggplot(data = UW_mag_diff) +
         plot.caption =  element_markdown(),
         axis.title.y = element_markdown(),
         axis.title.x = element_markdown())
-
-UW_smsd <- four_year_md_smsd %>%
-  filter(inst_name == "University of Washington-Seattle Campus")
 
 ggplot(data = UW_smsd) +
   geom_point(mapping=aes(x=year, y=smsd)) +
@@ -219,5 +225,47 @@ ggplot(data = Yale_smsd) +
         axis.title.y = element_markdown(),
         axis.title.x = element_markdown())
 
+#Princeton
+theme_update(plot.subtitle = element_text(hjust = 0.5, size = 13, color = '#FF6000'))
+Prince_mag_diff <- four_year_md_smsd %>%
+  filter(inst_name == "Princeton University")
+Prince_smsd <- four_year_md_smsd %>%
+  filter(inst_name == "Princeton University")
+
+ggplot(data = Prince_mag_diff) +
+  geom_point(mapping=aes(x=year, y=mag_diff)) +
+  geom_smooth(mapping=aes(x=year, y=mag_diff), color = "black", fill = "#DDDDDD",method = 'lm') +
+  labs(
+    title = "<b>Total Magnitudes of Racial Representative Differences<b>",
+    subtitle = "<b>Princeton University</b>",
+    caption = "<i>Total Magnitude measured by taking sum of all absolute values of <br>
+    differences <b>(College Percent - Market Percent) </b>of racial and ethnic groupings<br> 
+    in the data.</i>",
+    x = "<b>Years</b>", 
+    y= "<b>Total Magnitued</b>") +
+  scale_x_continuous(breaks=seq(2009,2017,by=1))+
+  theme(plot.title = element_markdown(),
+        plot.subtitle = element_markdown(),
+        plot.caption =  element_markdown(),
+        axis.title.y = element_markdown(),
+        axis.title.x = element_markdown())
+
+ggplot(data = Prince_smsd) +
+  geom_point(mapping=aes(x=year, y=smsd)) +
+  geom_smooth(mapping=aes(x=year, y=smsd), color = "black", fill = "#DDDDDD",method = 'lm') +
+  labs(
+    title = "<b>Total Magnitudes of Racial Representative Differences (Sqrt-Mean) <b>",
+    subtitle = "<b>Princeton University</b>",
+    caption = "<i>Total Magnitude measured by taking sum of all absolute values of <br>
+    differences <b>(College Percent - Market Percent) </b>of racial and ethnic groupings<br> 
+    in the data.</i>",
+    x = "<b>Years</b>", 
+    y= "<b>Total Magnitued</b>") +
+  scale_x_continuous(breaks=seq(2009,2017,by=1))+
+  theme(plot.title = element_markdown(),
+        plot.subtitle = element_markdown(),
+        plot.caption =  element_markdown(),
+        axis.title.y = element_markdown(),
+        axis.title.x = element_markdown())
 
 
