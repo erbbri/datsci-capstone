@@ -95,3 +95,26 @@ two_year_final_smsd <- two_year_md_smsd %>%
                     arrange(slope)
 ```
 
+### Analysis Line of Best Fit Metrics 
+
+```{r code3}
+ggplot(four_year_final_md) +
+  geom_histogram(mapping = aes(x=slope), bins = 200) +
+  labs(title = "Slope Values for Line of Best Fit (Difference Magnitude) Metric \n (4-Year Colleges) (200 Bins)", 
+       x= "Slope", y="Count") 
+
+ggplot(four_year_final_smsd) +
+  geom_histogram(mapping = aes(x=slope), bins = 200) +
+  labs(title = "Slope Values for Line of Best Fit (Square Root of Mean of Squared Differences) \nMetric (4-Year Colleges) (200 Bins)", 
+       x= "Slope", y="Count") 
+
+ggplot(two_year_final_md) +
+  geom_histogram(mapping = aes(x=slope), bins = 200) +
+  labs(title = "Slope Values for Line of Best Fit (Difference Magnitude) Metric \n (2-Year Colleges) (200 Bins)", 
+       x= "Slope", y="Count") 
+
+ggplot(two_year_final_smsd) +
+  geom_histogram(mapping = aes(x=slope), bins = 100) +
+  labs(title = "Slope Values for Line of Best Fit (Square Root of Mean of Squared Differences) \nMetric (2-Year Colleges) (100 Bins)", 
+       x= "Slope", y="Count") 
+```
