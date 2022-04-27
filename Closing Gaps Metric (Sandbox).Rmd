@@ -1,0 +1,120 @@
+---
+title: "Closing Gaps Metric (Sandbox)"
+author: "Emily Bogle" 
+date: "`r Sys.Date()`"
+output: openintro::lab_report
+---
+
+```{r load-packages, message=FALSE}
+library(tidyverse)
+library(openintro)
+library(ggplot2)
+library(dplyr)
+```
+
+### Data
+
+Importing 2-year and 4-year college datasets.
+Subsetting four_year to only include SPU info for practicing metric methods with one school.
+
+```{r code-1}
+two_year <- read_csv("CollegeData_2-year.csv")
+four_year <- read_csv("CollegeData_4-year.csv")
+View(two_year)
+View(four_year)
+
+spu <- filter(four_year, inst_name == "Seattle Pacific University")
+spu_UW <- filter(four_year, inst_name == "Seattle Pacific University" | inst_name == "University of Washington-Seattle Campus")
+
+```
+
+### SPU Practice
+
+Practice writing metric fucntions for one school.
+
+```{r code-2}
+spu_clean <- spu %>%
+                  select(year, inst_name, dif_white, dif_amind, dif_asian, dif_black,
+                        dif_pacis, dif_twora, dif_hispa)
+
+spu_mag_diff <- spu_clean %>%
+                  rowwise () %>%
+                  mutate(mag_diff = sum(abs(dif_white), abs(dif_hispa), abs(dif_black),
+                                            abs(dif_asian), abs(dif_amind), abs(dif_pacis),
+                                            abs(dif_twora), na.rm = T)) %>%
+                  mutate(missing_racial_data = is.na(dif_white) + is.na(abs(dif_hispa)) 
+                                              + is.na(abs(dif_black)) + is.na(abs(dif_asian)) 
+                                              + is.na(abs(dif_amind)) + is.na(abs(dif_pacis))
+                                              + is.na(abs(dif_twora))) %>%
+                  mutate(missing_racial_data = as.character(missing_racial_data))
+
+ggplot(data = spu_mag_diff) +
+  geom_point(mapping=aes(x=year, y=mag_diff, color=missing_racial_data)) +
+  geom_smooth(mapping=aes(x=year, y=mag_diff), method = 'lm') +
+  labs(title = "Total Magnitudes of Racial Representative Differnces (SPU)",
+       x = "Years", y= "Total Magnitued of Racial Difference Percentages", 
+       color = "Missing Racial Group Data") +
+       scale_x_continuous(breaks=seq(2009,2017,by=1))
+
+```
+
+
+### Extract Slope of Linear Model
+
+
+```{r code-3}
+summary(lm(formula = year ~ mag_diff, data = spu_mag_diff))  
+
+summary(lm(formula = year ~ mag_diff, data = spu_mag_diff))$coefficients[2,1] 
+```
+
+### Add Column to Dataset to Store Slope
+
+
+```{r code-4}
+spu_final <- spu_mag_diff %>%   
+                  group_by(inst_name) %>%
+                  summarise(lm_slope = summary(lm(formula = year ~ mag_diff, 
+                                                  data = spu_mag_diff))$coefficients[2,1])
+```
+
+
+### Multiple Schools Practice
+
+Practice writing metric fucntions for two school.
+
+```{r code-2}
+spu_UW_clean <- spu_UW %>%
+                          select(year, inst_name, dif_white, dif_amind, dif_asian, dif_black,
+                                 dif_pacis, dif_twora, dif_hispa)
+
+spu_UW_mag_diff <- spu_UW_clean %>%
+                      rowwise () %>%
+                      mutate(mag_diff = sum(abs(dif_white), abs(dif_hispa), abs(dif_black),
+                                            abs(dif_asian), abs(dif_amind), abs(dif_pacis),
+                                            abs(dif_twora), na.rm = T)) %>%
+                      mutate(missing_racial_data = is.na(dif_white) + is.na(abs(dif_hispa)) + is.na(abs(dif_black))
+                                            + is.na(abs(dif_asian)) + is.na(abs(dif_amind)) + is.na(abs(dif_pacis))
+                                             + is.na(abs(dif_twora))) %>%
+                      mutate(missing_racial_data = as.character(missing_racial_data))
+
+UW_mag_diff <- spu_UW_mag_diff %>%
+                      filter(inst_name == "University of Washington-Seattle Campus")
+
+##We can make plots for any given school's data
+ggplot(data = UW_mag_diff) +
+  geom_point(mapping=aes(x=year, y=mag_diff)) +
+  geom_smooth(mapping=aes(x=year, y=mag_diff), method = 'lm') +
+  labs(title = "Total Magnitudes of Racial Representative Differnces (UW)",
+       x = "Years", y= "Total Magnitued of Racial Difference Percentages") +
+       scale_x_continuous(breaks=seq(2009,2017,by=1))
+
+
+final <- spu_UW_mag_diff %>%   
+                  group_by(inst_name) %>%
+                  do(linmod = lm( year ~ mag_diff, data = .)) %>%
+                  rowwise () %>%
+                  mutate(slope = linmod$coefficients[2]) %>%
+                  arrange(slope)
+```
+
