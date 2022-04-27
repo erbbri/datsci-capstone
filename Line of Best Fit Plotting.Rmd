@@ -71,10 +71,11 @@ SPU_mag_diff <- four_year_md_smsd %>%
 
 ##Make individual plots for any given school's data
 ggplot(data = SPU_mag_diff) +
-  geom_point(mapping=aes(x=year, y=mag_diff)) +
+  geom_point(mapping=aes(x=year, y=mag_diff, color=missing_racial_data)) +
   geom_smooth(mapping=aes(x=year, y=mag_diff), method = 'lm') +
   labs(title = "Total Magnitudes of Racial Representative Differnces (SPU)",
-       x = "Years", y= "Total Magnitued of Racial Difference Percentages") +
+       x = "Years", y= "Total Magnitued of Racial Difference Percentages",
+       color = "Missing Racial Data") +
        scale_x_continuous(breaks=seq(2009,2017,by=1))
 ```
 
@@ -90,9 +91,10 @@ SPU_smsd <- four_year_md_smsd %>%
 
 ##Make individual plots for any given school's data
 ggplot(data = SPU_smsd) +
-  geom_point(mapping=aes(x=year, y=smsd)) +
+  geom_point(mapping=aes(x=year, y=smsd, color=missing_racial_data)) +
   geom_smooth(mapping=aes(x=year, y=smsd), method = 'lm') +
   labs(title = "Total Magnitudes of Racial Representative Differnces (SPU)",
-       x = "Years", y= "Total Magnitued of Racial Difference Percentages") +
+       x = "Years", y= "Total Magnitued of Racial Difference Percentages",
+       color="Missing Racial Data") +
        scale_x_continuous(breaks=seq(2009,2017,by=1))
 ```
