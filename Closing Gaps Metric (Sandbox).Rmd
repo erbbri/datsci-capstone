@@ -1,6 +1,6 @@
 ---
-title: "Lab Name"
-author: "Author Name"
+title: "Closing Gaps Metric (Sandbox)"
+author: "Emily Bogle" 
 date: "`r Sys.Date()`"
 output: openintro::lab_report
 ---
