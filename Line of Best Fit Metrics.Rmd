@@ -32,10 +32,10 @@ four_year_md_smsd <- four_year_clean %>%
                   mutate(mag_diff = sum(abs(dif_white), abs(dif_hispa), abs(dif_black),
                                             abs(dif_asian), abs(dif_amind), abs(dif_pacis),
                                             abs(dif_twora), na.rm = T)) %>%
-                  mutate(se = sum((dif_white)^2, (dif_hispa)^2, (dif_black)^2, 
+                  mutate(sse = sum((dif_white)^2, (dif_hispa)^2, (dif_black)^2, 
                               (dif_asian)^2, (dif_amind)^2, (dif_pacis)^2,
                               (dif_twora)^2, na.rm = T)) %>%
-                  mutate(smsd = sqrt(1/7*se)) %>%
+                  mutate(smsd = sqrt(1/7*sse)) %>%
                   mutate(missing_racial_data = is.na(dif_white) + is.na(abs(dif_hispa)) 
                                               + is.na(abs(dif_black)) + is.na(abs(dif_asian)) 
                                               + is.na(abs(dif_amind)) + is.na(abs(dif_pacis))
@@ -48,10 +48,10 @@ two_year_md_smsd <- two_year_clean %>%
                   mutate(mag_diff = sum(abs(dif_white), abs(dif_hispa), abs(dif_black),
                                             abs(dif_asian), abs(dif_amind), abs(dif_pacis),
                                             abs(dif_twora), na.rm = T)) %>%
-                  mutate(se = sum((dif_white)^2, (dif_hispa)^2, (dif_black)^2, 
+                  mutate(sse = sum((dif_white)^2, (dif_hispa)^2, (dif_black)^2, 
                               (dif_asian)^2, (dif_amind)^2, (dif_pacis)^2,
                               (dif_twora)^2, na.rm = T)) %>%
-                  mutate(smsd = sqrt(1/7*se)) %>%
+                  mutate(smsd = sqrt(1/7*sse)) %>%
                   mutate(missing_racial_data = is.na(dif_white) + is.na(abs(dif_hispa)) 
                                               + is.na(abs(dif_black)) + is.na(abs(dif_asian)) 
                                               + is.na(abs(dif_amind)) + is.na(abs(dif_pacis))
