@@ -66,14 +66,14 @@ This code can be used with any institution. I have sample code below for SPU. Ma
 
 ```{r code2}
 #Subset data to given school of interest
-SPU_mag_diff <- four_year_md_smsd %>%
-                      filter(inst_name == "Seattle Pacific University")
+plot_data <- four_year_md_smsd %>%
+                      filter(unitid == )
 
 ##Make individual plots for any given school's data
-ggplot(data = SPU_mag_diff) +
+ggplot(data = plot_data) +
   geom_point(mapping=aes(x=year, y=mag_diff, color=missing_racial_data)) +
   geom_smooth(mapping=aes(x=year, y=mag_diff), method = 'lm') +
-  labs(title = "Total Magnitudes of Racial Representative Differnces (SPU)",
+  labs(title = "Total Magnitudes of Racial Representative Differnces",
        x = "Years", y= "Total Magnitued of Racial Difference Percentages",
        color = "Missing Racial Data") +
        scale_x_continuous(breaks=seq(2009,2017,by=1))
@@ -87,7 +87,7 @@ This code can be used with any institution. I have sample code below for SPU. Ma
 ```{r code2}
 #Subset data to given school of interest
 SPU_smsd <- four_year_md_smsd %>%
-                      filter(inst_name == "Seattle Pacific University")
+                      filter(unitid == )
 
 ##Make individual plots for any given school's data
 ggplot(data = SPU_smsd) +
