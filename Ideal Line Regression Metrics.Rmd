@@ -19,11 +19,11 @@ two_year <- read_csv("CollegeData_2-year.csv")
 four_year <- read_csv("CollegeData_4-year.csv")
 
 four_year_clean <- four_year %>%
-                  select(year, inst_name, dif_white, dif_amind, dif_asian, dif_black,
+                  select(unitid, year, inst_name, dif_white, dif_amind, dif_asian, dif_black,
                         dif_pacis, dif_twora, dif_hispa)
 
 two_year_clean <- four_year %>%
-                  select(year, inst_name, dif_white, dif_amind, dif_asian, dif_black,
+                  select(unitid, year, inst_name, dif_white, dif_amind, dif_asian, dif_black,
                         dif_pacis, dif_twora, dif_hispa)
 
 #NOTE: this will take a second to complete, green bar is good!, wait until it disappears 
@@ -58,95 +58,9 @@ two_year_md_smsd <- two_year_clean %>%
                                               + is.na(abs(dif_twora))) %>%
                   mutate(missing_racial_data = as.character(missing_racial_data))
 
-```
-
-### Creating Ideal Lines for Regression Analysis with School's Data 
-
-Insert any text here.
-
-```{r code2}
-two_year_md_low_hinge <- two_year_md_smsd %>%
-                      group_by(inst_name) %>%
-                      arrange(mag_diff, .by_group=T, na.rm=T) %>%
-                      filter(row_number()==1)
-
-two_year_md_high_hinge <- two_year_md_smsd %>%
-                      group_by(inst_name) %>%
-                      arrange(mag_diff, .by_group=T, na.rm=T) %>%
-                      filter(row_number()==9)
-
-two_year_smsd_low_hinge <- two_year_md_smsd %>%
-                      group_by(inst_name) %>%
-                      arrange(smsd, .by_group=T, na.rm=T) %>%
-                      filter(row_number()==1)
-
-two_year_smsd_high_hinge <- two_year_md_smsd %>%
-                      group_by(inst_name) %>%
-                      arrange(smsd, .by_group=T, na.rm=T) %>%
-                      filter(row_number()==9)
-                      
-md_low_hinge <- mean(two_year_md_low_hinge$mag_diff, na.rm = T) 
-md_high_hinge <- mean(two_year_md_high_hinge$mag_diff, na.rm = T) 
-smsd_low_hinge <- mean(two_year_smsd_low_hinge$smsd, na.rm = T) 
-smsd_high_hinge <- mean(two_year_smsd_high_hinge$smsd, na.rm = T) 
-
-year <- c(1,9)
-md_hinge <- c(md_high_hinge, md_low_hinge)
-smsd_hinge <- c(smsd_high_hinge,smsd_low_hinge)
-
-df <- data.frame (year, md_hinge, smsd_hinge)
-
-ggplot(data = df, aes(x=year, y=md_hinge)) +
-  geom_point() +
-  geom_smooth(method = "lm", formula= (y ~ exp(-x)), se=FALSE, linetype = 1) +
-  labs(title = "Ideal Exponential Line through Avg. High & Low Magnitude Differences",
-       x = "Years Since 2008", y= "Total of Magnitude Difference Percentages") +
-       scale_x_continuous(breaks=seq(1,9,by=1))
-
-ggplot(data = df, aes(x=year, y=smsd_hinge)) +
-  geom_point() +
-  geom_smooth(method = "lm", formula= (y ~ exp(-x)), se=FALSE, linetype = 1) +
-  labs(title = "Ideal Exponential Line through Avg. High & Low Square Root of 
-       Mean of Squared Differences",
-       x = "Years Since 2008", y= "Square Root of Mean of Squared Differences Percentages") +
-       scale_x_continuous(breaks=seq(1,9,by=1))
-
-four_yearedit_md_smsd <- four_year_md_smsd %>%
-                        mutate(yearedit = year-2008)
-
-two_yearedit_md_smsd <- two_year_md_smsd %>%
-                        mutate(yearedit = year-2008)
 
 ```
 
-### Ideal Line with Regression Analysis Metric (Diff Magnitudes)(Quadratic)
-
-Insert any text here.
-
-```{r code3}
 
 ```
 
-### Ideal Line with Regression Analysis Metric (Diff Magnitudes)(Exponential)
-
-Insert any text here.
-
-```{r code4}
-fy_il_dm_ex <-
-```
-
-### Ideal Line with Regression Analysis Metric (sqrt-Mean of Squared Differences)(Quadratic)
-
-Insert any text here.
-
-```{r code5}
-# Insert code for Exercise 1 here
-```
-
-### Ideal Line with Regression Analysis Metric (sqrt-Mean of Squared Differences)(Exponential) 
-
-Insert any text here.
-
-```{r code6}
-# Insert code for Exercise 1 here
-```

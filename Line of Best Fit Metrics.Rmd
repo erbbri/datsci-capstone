@@ -19,11 +19,11 @@ two_year <- read_csv("CollegeData_2-year.csv")
 four_year <- read_csv("CollegeData_4-year.csv")
 
 four_year_clean <- four_year %>%
-                  select(year, inst_name, dif_white, dif_amind, dif_asian, dif_black,
+                  select(unitid, year, inst_name, dif_white, dif_amind, dif_asian, dif_black,
                         dif_pacis, dif_twora, dif_hispa)
 
 two_year_clean <- two_year %>%
-                  select(year, inst_name, dif_white, dif_amind, dif_asian, dif_black,
+                  select(unitid, year, inst_name, dif_white, dif_amind, dif_asian, dif_black,
                         dif_pacis, dif_twora, dif_hispa)
 
 #NOTE: this will take a second to complete, green bar is good!, wait until it disappears 
@@ -57,41 +57,96 @@ two_year_md_smsd <- two_year_clean %>%
                                               + is.na(abs(dif_amind)) + is.na(abs(dif_pacis))
                                               + is.na(abs(dif_twora))) %>%
                   mutate(missing_racial_data = as.character(missing_racial_data))
+
+###Cutting out schools with one or more years of data missing
+four_year_keeper_list<- four_year_md_smsd %>%
+                    group_by(unitid) %>%
+                    summarize(count=n()) %>%
+                    filter(count == 9) 
+two_year_keeper_list<- two_year_md_smsd %>%
+                    group_by(unitid) %>%
+                    summarize(count=n()) %>%
+                    filter(count == 9) 
+
+four_year_md_cut <- four_year_md_smsd %>%
+                    filter(unitid %in% four_year_keeper_list$unitid)
+
+two_year_md_cut <- two_year_md_smsd %>%
+                    filter(unitid %in% two_year_keeper_list$unitid)
+
+length(unique(four_year_md_smsd$unitid))
+length(unique(four_year_md_cut$unitid)) 
+
+length(unique(two_year_md_smsd$unitid))
+length(unique(two_year_md_cut$unitid)) 
+
+four_join <- four_year_md_cut %>%
+          group_by(unitid) %>%
+          filter(row_number()==1)
+
+two_join  <- two_year_md_cut %>%
+          group_by(unitid) %>%
+          filter(row_number()==1)
+
 ```
 
 ### Line of Best Fit Using Diff Magnitudes
 
 ```{r code2}
-four_year_final_md <- four_year_md_smsd %>%   
-                  group_by(inst_name) %>%
+four_year_final_md <- four_year_md_cut %>%   
+                  group_by(unitid) %>%
                   do(linmod = lm( year ~ mag_diff, data = .)) %>%
                   rowwise () %>%
                   mutate(slope = linmod$coefficients[2]) %>%
                   arrange(slope)
 
-two_year_final_md <- two_year_md_smsd %>%   
-                  group_by(inst_name) %>%
+four_year_md_join <- left_join(four_join, four_year_final_md, by=c('unitid'='unitid')) %>%
+                  select(unitid, inst_name, linmod, slope)
+
+four_year_md_final <- four_year_join %>%
+                    arrange(slope)
+
+two_year_final_md <- two_year_md_cut %>%   
+                  group_by(unitid) %>%
                   do(linmod = lm( year ~ mag_diff, data = .)) %>%
                   rowwise () %>%
                   mutate(slope = linmod$coefficients[2]) %>%
                   arrange(slope)
+
+two_year_md_join <- left_join(two_join, two_year_final_md, by=c('unitid'='unitid')) %>%
+                  select(unitid, inst_name, linmod, slope)
+
+two_year_md_final <- two_year_join %>%
+                    arrange(slope)
 ```
 
 ### Line of Best Fit Using (sqrt) Mean of Squared Differences 
 
 ```{r code3}
-four_year_final_smsd <- four_year_md_smsd %>%   
-                     group_by(inst_name) %>%
+four_year_final_smsd <- four_year_md_cut %>%   
+                     group_by(unitid) %>%
                      do(linmod = lm( year ~ smsd, data = .)) %>%
                      rowwise () %>%
                      mutate(slope = linmod$coefficients[2]) %>%
                      arrange(slope)
 
-two_year_final_smsd <- two_year_md_smsd %>%   
-                    group_by(inst_name) %>%
+four_year_smsd_join <- left_join(four_join, four_year_final_smsd, by=c('unitid'='unitid')) %>%
+                  select(unitid, inst_name, linmod, slope)
+
+four_year_smsd_final <- four_year_join %>%
+                    arrange(slope)
+
+two_year_final_smsd <- two_year_md_cut %>%   
+                    group_by(unitid) %>%
                     do(linmod = lm( year ~ smsd, data = .)) %>%
                     rowwise () %>%
                     mutate(slope = linmod$coefficients[2]) %>%
+                    arrange(slope)
+
+two_year_smsd_join <- left_join(two_join, two_year_final_smsd, by=c('unitid'='unitid')) %>%
+                  select(unitid, inst_name, linmod, slope)
+
+two_year_smsd_final <- two_year_join %>%
                     arrange(slope)
 ```
 
