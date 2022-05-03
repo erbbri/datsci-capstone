@@ -67,13 +67,13 @@ This code can be used with any institution. I have sample code below for SPU. Ma
 ```{r code2}
 #Subset data to given school of interest
 plot_data <- two_year_md_smsd %>%
-                      filter(unitid == "218140")
+                      filter(unitid == "144865")
 
 ##Make individual plots for any given school's data
 ggplot(data = plot_data) +
   geom_point(mapping=aes(x=year, y=mag_diff, color=missing_racial_data)) +
   geom_smooth(mapping=aes(x=year, y=mag_diff), method = 'lm') +
-  labs(title = "Total Magnitudes of Racial Representative Differnces \n Horry-Georgetown Technical College",
+  labs(title = "Total Magnitudes of Racial Representative Differnces \n College of DuPage",
        x = "Years", y= "Total Magnitued of Racial Difference Percentages",
        color = "Missing Racial Data") +
        scale_x_continuous(breaks=seq(2009,2017,by=1))
