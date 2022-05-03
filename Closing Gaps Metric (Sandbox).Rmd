@@ -63,9 +63,9 @@ ggplot(data = spu_mag_diff) +
 
 
 ```{r code-3}
-summary(lm(formula = year ~ mag_diff, data = spu_mag_diff))  
+summary(lm(formula = mag_diff ~ year, data = spu_mag_diff))  
 
-summary(lm(formula = year ~ mag_diff, data = spu_mag_diff))$coefficients[2,1] 
+summary(lm(formula = mag_diff ~ year, data = spu_mag_diff))$coefficients[2,1] 
 ```
 
 ### Add Column to Dataset to Store Slope
