@@ -95,7 +95,7 @@ two_year_join  <- two_year_md_cut %>%
 ```{r code2}
 four_year_final_md <- four_year_md_cut %>%   
                   group_by(unitid) %>%
-                  do(linmod = lm( year ~ mag_diff, data = .)) %>%
+                  do(linmod = lm( mag_diff ~ year, data = .)) %>%
                   rowwise () %>%
                   mutate(slope = linmod$coefficients[2]) %>%
                   arrange(slope)
@@ -108,7 +108,7 @@ four_year_md_final <- four_year_md_join %>%
 
 two_year_final_md <- two_year_md_cut %>%   
                   group_by(unitid) %>%
-                  do(linmod = lm( year ~ mag_diff, data = .)) %>%
+                  do(linmod = lm( mag_diff ~ year, data = .)) %>%
                   rowwise () %>%
                   mutate(slope = linmod$coefficients[2]) %>%
                   arrange(slope)
@@ -125,7 +125,7 @@ two_year_md_final <- two_year_md_join %>%
 ```{r code3}
 four_year_final_smsd <- four_year_md_cut %>%   
                      group_by(unitid) %>%
-                     do(linmod = lm( year ~ smsd, data = .)) %>%
+                     do(linmod = lm( smsd ~ year, data = .)) %>%
                      rowwise () %>%
                      mutate(slope = linmod$coefficients[2]) %>%
                      arrange(slope)
@@ -138,7 +138,7 @@ four_year_smsd_final <- four_year_smsd_join %>%
 
 two_year_final_smsd <- two_year_md_cut %>%   
                     group_by(unitid) %>%
-                    do(linmod = lm( year ~ smsd, data = .)) %>%
+                    do(linmod = lm( smsd ~ year, data = .)) %>%
                     rowwise () %>%
                     mutate(slope = linmod$coefficients[2]) %>%
                     arrange(slope)
