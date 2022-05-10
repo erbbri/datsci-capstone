@@ -58,15 +58,15 @@ two_year_md_smsd <- two_year_clean %>%
                                               + is.na(abs(dif_twora))) %>%
                   mutate(missing_racial_data = as.character(missing_racial_data))
 
-###Cutting out schools with one or more years of data missing
+###Cutting out schools with two or more years of data missing
 four_year_keeper_list<- four_year_md_smsd %>%
                     group_by(unitid) %>%
                     summarize(count=n()) %>%
-                    filter(count == 9)
+                    filter(count == 9 | count == 8)
 two_year_keeper_list<- two_year_md_smsd %>%
                     group_by(unitid) %>%
                     summarize(count=n()) %>%
-                    filter(count == 9)
+                    filter(count == 9 | count == 8)
 
 four_year_md_cut <- four_year_md_smsd %>%
                     filter(unitid %in% four_year_keeper_list$unitid)
@@ -100,7 +100,7 @@ four_year_final_md <- four_year_md_cut %>%
                   mutate(slope = linmod$coefficients[2]) %>%
                   arrange(slope)
 
-four_year_md_join <- left_join(four_join, four_year_final_md, by=c('unitid'='unitid')) %>%
+four_year_md_join <- left_join(four_year_join, four_year_final_md, by=c('unitid'='unitid')) %>%
                   select(unitid, inst_name, linmod, slope)
 
 four_year_md_final <- four_year_md_join %>%
@@ -113,7 +113,7 @@ two_year_final_md <- two_year_md_cut %>%
                   mutate(slope = linmod$coefficients[2]) %>%
                   arrange(slope)
 
-two_year_md_join <- left_join(two_join, two_year_final_md, by=c('unitid'='unitid')) %>%
+two_year_md_join <- left_join(two_year_join, two_year_final_md, by=c('unitid'='unitid')) %>%
                   select(unitid, inst_name, linmod, slope)
 
 two_year_md_final <- two_year_md_join %>%
