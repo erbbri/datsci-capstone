@@ -1,5 +1,5 @@
 ---
-title: "Lab Name"
+title: "Exploratory Visualizations of Data"
 author: "Sagma Prajapati"
 date: "`r Sys.Date()`"
 output: openintro::lab_report
