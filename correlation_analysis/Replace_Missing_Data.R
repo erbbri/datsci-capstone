@@ -1,5 +1,8 @@
+#Load essential packages
 library(dplyr)
 library(tidyr)
+
+#Write code to be able to replace partial missing racial data in four year dataframe with the mean of that racial percentage considering all other present years.
 four_year <- read_csv("CollegeData_4-year.csv")
 replace_missing <- CollegeData_4_year %>%
   mutate_at(vars(col_white, mkt_white, dif_white,
