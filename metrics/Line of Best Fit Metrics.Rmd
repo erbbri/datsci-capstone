@@ -1,6 +1,6 @@
 ---
 title: "Line of Best Fit Metrics"
-author: "Author Name"
+author: "Emily Bogle, Keaton S."
 date: "`r Sys.Date()`"
 output: openintro::lab_report
 ---
