@@ -1,0 +1,249 @@
+---
+title: "Lab Name"
+author: "Author Name"
+date: "`r Sys.Date()`"
+output: openintro::lab_report
+---
+
+```{r load-packages, message=FALSE}
+library(tidyverse)
+library(openintro)
+library(educationdata)
+
+#replace this line with whatever the csv file is called on your computer and the rest should work
+four_year <- read_csv("HEsegDataviz_CollegeData_4-year_v5.csv")
+
+#insert the new code for replacing missing racial data either before or after running metrics, i could not remember what we decided to do about that
+
+```
+
+### Exercise 1
+
+Accessing the new data and making a data frame
+
+```{r}
+df <- get_education_data(level = 'college-university', 
+                         source = 'scorecard', 
+                         topic = 'institutional-characteristics',
+                         filters = list(year = 2009:2017),
+                         add_labels = TRUE)
+set1_religious <- df %>%
+  select(unitid, year, religious_affiliation)
+
+df2 <- get_education_data(level = 'college-university', 
+                         source = 'ipeds', 
+                         topic = 'admissions-enrollment',
+                         filters = list(year = 2009:2017),
+                         add_labels = TRUE)
+set2 <- df2 %>%
+  select(unitid, year, number_applied, number_admitted, number_enrolled_total) %>%
+  group_by(unitid, year) %>%
+  summarise(number_applied = mean(number_applied, na.rm=T),
+            number_admitted = mean(number_admitted, na.rm=T),
+            number_enrolled = mean(number_enrolled_total, na.rm=T))
+
+df3 <- get_education_data(level = 'college-university', 
+                         source = 'ipeds', 
+                         topic = 'finance',
+                         filters = list(year = 2009:2017),
+                         add_labels = TRUE)
+
+set3 <- df3 %>%
+  select(unitid, year, rev_total_current, sch_total_student_aid, exp_instruc_total)
+
+df4 <- get_education_data(level = 'college-university', 
+                         source = 'ipeds', 
+                         topic = 'academic-year-tuition',
+                         filters = list(year = 2009:2017),
+                         add_labels = TRUE)
+
+set4 <- df4 %>%
+  filter(tuition_type == "In state" & level_of_study == "Undergraduate") %>%
+  select(unitid, year, tuition_fees_published, tuition_fees_ft)
+
+df5 <- get_education_data(level = 'college-university', 
+                         source = 'ipeds', 
+                         topic = 'program-year-room-board-other',
+                         filters = list(year = 2009:2017),
+                         add_labels = TRUE)
+
+set5 <- df5 %>%
+  filter(living_arrangement == "On campus" | living_arrangement == "Off campus not with family") %>%
+  select(unitid, year, room_board)
+
+df6 <- get_education_data(level = 'college-university', 
+                         source = 'ipeds', 
+                         topic = 'student-faculty-ratio',
+                         filters = list(year = 2009:2017),
+                         add_labels = TRUE)
+set6 <- df6 %>%
+  select(unitid, year, student_faculty_ratio)
+
+df7 <- get_education_data(level = 'college-university', 
+                         source = 'nacubo', 
+                         topic = 'endowments',
+                         filters = list(year = 2012:2017),
+                         add_labels = TRUE)
+
+set7 <- df7 %>%
+  select(unitid, year, endow_total)
+
+df8 <- get_education_data(level = 'college-university', 
+                         source = 'scorecard', 
+                         topic = 'student-characteristics',
+                         subtopic = 'aid-applicants',
+                         filters = list(year = 2009:2016),
+                         add_labels = TRUE)
+
+set8 <- df8 %>%
+  select(unitid, year, faminc_mean, faminc_med)
+
+df9 <- get_education_data(level = 'college-university', 
+                         source = 'fsa', 
+                         topic = 'grants',
+                         filters = list(year = 2009:2017),
+                         add_labels = TRUE)
+
+set9 <- df9 %>%
+  group_by(unitid, year) %>%
+  summarise(grant_recipients_unitid = mean(grant_recipients_unitid, na.rm=T),
+            value_grants_disbursed_unitid = mean(value_grants_disbursed_unitid, na.rm=T))
+
+df10 <- get_education_data(level = 'college-university', 
+                         source = 'fsa', 
+                         topic = 'loans',
+                         filters = list(year = 2009:2017),
+                         add_labels = TRUE)
+
+set10 <- df10 %>%
+  group_by(unitid, year) %>%
+  summarise(loan_recipients_unitid = mean(loan_recipients_unitid, na.rm=T),
+            value_loan_disbursements_unitid = mean(value_loan_disbursements_unitid, na.rm=T))
+
+
+df11 <- get_education_data(level = 'college-university', 
+                         source = 'fsa', 
+                         topic = 'campus-based-volume',
+                         filters = list(year = 2009:2017),
+                         add_labels = TRUE)
+set11 <- df11 %>%
+  group_by(unitid, year) %>%
+  summarise(campus_award_recipients_unitid = mean(campus_award_recipients_unitid, na.rm=T),
+            value_campus_disbursed_unitid = mean(value_campus_disbursed_unitid, na.rm=T))
+
+all_years <- four_year %>%
+  left_join(set1_religious, by=c("unitid", "year")) %>%
+  left_join(set2, by=c("unitid", "year")) %>%
+  left_join(set3, by=c("unitid", "year")) %>%
+  left_join(set4, by=c("unitid", "year")) %>%
+  left_join(set5, by=c("unitid", "year")) %>%
+  left_join(set6, by=c("unitid", "year")) %>%
+  left_join(set7, by=c("unitid", "year")) %>%
+  left_join(set8, by=c("unitid", "year")) %>%
+  left_join(set9, by=c("unitid", "year")) %>%
+  left_join(set10, by=c("unitid", "year")) %>%
+  left_join(set11, by=c("unitid", "year"))
+```
+
+### Exercise 2
+```{r}
+four_year_clean <- four_year %>%
+                  select(unitid, year, fips_ipeds, inst_name, dif_white, dif_amind, dif_asian, dif_black,
+                        dif_pacis, dif_twora, dif_hispa)
+
+#NOTE: this will take a second to complete, green bar is good!, wait until it disappears 
+four_year_md_smsd <- four_year_clean %>%
+                  rowwise () %>%
+                  mutate(mag_diff = sum(abs(dif_white), abs(dif_hispa), abs(dif_black),
+                                            abs(dif_asian), abs(dif_amind), abs(dif_pacis),
+                                            abs(dif_twora), na.rm = T)) %>%
+                  mutate(sse = sum((dif_white)^2, (dif_hispa)^2, (dif_black)^2, 
+                              (dif_asian)^2, (dif_amind)^2, (dif_pacis)^2,
+                              (dif_twora)^2, na.rm = T)) %>%
+                  mutate(smsd = sqrt(1/7*sse)) %>%
+                  mutate(missing_racial_data = is.na(dif_white) + is.na(abs(dif_hispa)) 
+                                              + is.na(abs(dif_black)) + is.na(abs(dif_asian)) 
+                                              + is.na(abs(dif_amind)) + is.na(abs(dif_pacis))
+                                              + is.na(abs(dif_twora))) %>%
+                  mutate(missing_racial_data = as.character(missing_racial_data))
+
+###Cutting out schools with two or more years of data missing
+four_year_keeper_list<- four_year_md_smsd %>%
+                    group_by(unitid) %>%
+                    summarize(count=n()) %>%
+                    filter(count == 9 | count == 8)
+
+four_year_md_cut <- four_year_md_smsd %>%
+                    filter(unitid %in% four_year_keeper_list$unitid)
+
+length(unique(four_year_md_smsd$unitid))
+length(unique(four_year_md_cut$unitid)) 
+
+four_year_join <- four_year_md_cut %>%
+          group_by(unitid) %>%
+          filter(row_number()==1)
+```
+
+### Running metric
+
+```{r}
+four_year_final_md <- four_year_md_cut %>%   
+                  group_by(unitid) %>%
+                  do(linmod = lm( mag_diff ~ year, data = .)) %>%
+                  rowwise () %>%
+                  mutate(slope = linmod$coefficients[2]) %>%
+                  arrange(slope)
+four_year_md_join <- left_join(four_year_join, four_year_final_md, by=c('unitid'='unitid')) %>%
+                  select(unitid, fips_ipeds, inst_name, linmod, slope)
+four_year_md_final <- four_year_md_join %>%
+                    arrange(slope)
+```
+
+### Joining for correlation set (one row for each school)
+
+```{r}
+one_year_categorical <- all_years %>%
+  group_by(unitid) %>%
+  filter(row_number() == 1) %>%
+  select(unitid, fourcat, public, private, forprofit, selective, more_selective, non_selective, religious_affiliation)
+
+one_year_quantitative <- all_years %>%
+  group_by(unitid) %>%
+  summarise(total_enrollment = mean(total_enrollment, na.rm=T),
+            number_applied = mean(number_applied, na.rm=T),
+            number_admitted = mean(number_admitted, na.rm=T),
+            number_enrolled = mean(number_enrolled, na.rm=T),
+            rev_total_current = mean(rev_total_current, na.rm=T),
+            sch_total_student_aid = mean(sch_total_student_aid, na.rm=T),
+            exp_instruc_total = mean(exp_instruc_total, na.rm=T),
+            tuition_fees_ft = mean(tuition_fees_ft, na.rm=T),
+            tuition_fees_published = mean(tuition_fees_published, na.rm=T),
+            room_board = mean(room_board, na.rm=T),
+            student_faculty_ratio = mean(student_faculty_ratio, na.rm=T),
+            endow_total = mean(endow_total, na.rm=T),
+            faminc_mean = mean(faminc_mean, na.rm=T),
+            faminc_med = mean(faminc_med, na.rm=T),
+            grant_recipients_unitid = mean(grant_recipients_unitid, na.rm=T),
+            value_grants_disbursed_unitid = mean(value_grants_disbursed_unitid, na.rm=T),
+            loan_recipients_unitid = mean(loan_recipients_unitid, na.rm=T),
+            value_loan_disbursements_unitid = mean(value_loan_disbursements_unitid, na.rm=T),
+            campus_award_recipients_unitid = mean(campus_award_recipients_unitid, na.rm=T),
+            value_campus_disbursed_unitid = mean(campus_award_recipients_unitid, na.rm=T))
+
+final_one_year_correlation_set <- four_year_md_final %>%
+  left_join(one_year_categorical, by='unitid') %>%
+  left_join(one_year_quantitative, by='unitid')
+```
+
+### joining set for modeling (one row per year)
+
+```{r}
+mag_diff_set <- four_year_md_cut %>%
+  select(unitid, year, mag_diff)
+
+final_modeling_set <- mag_diff_set %>%
+  left_join(all_years, by=c('unitid', 'year'))
+```
+
+...
+
