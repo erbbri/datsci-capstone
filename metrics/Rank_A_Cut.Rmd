@@ -209,3 +209,8 @@ plot(comparing_two_year_school$rank_md, comparing_two_year_school$rank_smsd,
      main = "Rank obtained by MD VS SMSD for 2 year college")
 
 ```
+### Calculating the difference in the Rank
+```{r }
+#Calculate the difference in the rankings for each school between md and smsd ranks for both two year and four year schools.
+comparing_four_year_school$Difference <- abs (comparing_four_year_school$rank_md - comparing_four_year_school$rank_smsd)
+comparing_two_year_school$Difference <- abs (comparing_two_year_school$rank_md - comparing_two_year_school$rank_smsd)
