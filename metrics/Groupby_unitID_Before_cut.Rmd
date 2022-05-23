@@ -1,11 +1,12 @@
 ---
-title: "Analyzing common school toward top"
-author: "Author name"
+title: "Analyzing Common Schools Toward Top (Grouping by Unitid Only)"
+author: "Emily B., Sagma P."
 date: "`r Sys.Date()`"
 output: openintro::lab_report
 ---
 
 ```{r load-packages, message=FALSE}
+#Load needed R Packages
 library(tidyverse)
 library(openintro)
 library(ggplot2)
@@ -15,9 +16,11 @@ library(dplyr)
 ### Import, Filter, and Mutate Data
 
 ```{r code1}
+#Import two year and four year institution dataframes.
 two_year <- read_csv("CollegeData_2-year.csv")
 four_year <- read_csv("CollegeData_4-year.csv")
 
+#Select only variables needed for metric use in the dataframes. 
 four_year_clean <- four_year %>%
                   select(year, inst_name, dif_white, dif_amind, dif_asian, dif_black,
                         dif_pacis, dif_twora, dif_hispa)
@@ -26,6 +29,8 @@ two_year_clean <- two_year %>%
                   select(year, inst_name, dif_white, dif_amind, dif_asian, dif_black,
                         dif_pacis, dif_twora, dif_hispa)
 
+#Create magnitude difference, and square root of means of squared differences variables in the four year dataframe and two year dataframe.
+#Also, create character variable to store number of missing racial data a school has in any given year.
 #NOTE: this will take a second to complete, green bar is good!, wait until it disappears 
 four_year_md_smsd <- four_year_clean %>%
                   rowwise () %>%
@@ -42,7 +47,6 @@ four_year_md_smsd <- four_year_clean %>%
                                               + is.na(abs(dif_twora))) %>%
                   mutate(missing_racial_data = as.character(missing_racial_data))
 
-#NOTE: this will take a second to complete, green bar is good!, wait until it disappears 
 two_year_md_smsd <- two_year_clean %>%
                   rowwise () %>%
                   mutate(mag_diff = sum(abs(dif_white), abs(dif_hispa), abs(dif_black),
@@ -62,13 +66,21 @@ two_year_md_smsd <- two_year_clean %>%
 ### Line of Best Fit Using Diff Magnitudes
 
 ```{r code2}
+#For four year schools, create line of best fit model through magnitude difference values across years for each school.
+#Store slope of this line of best fit for each school.
+#Join four_join dataframe to include unitid, inst_name, linmod, and slope variables in final data frame.
+#Order dataframe rows by slope (ascending).
 four_year_final_md <- four_year_md_smsd %>%   
                   group_by(inst_name) %>%
                   do(linmod = lm( year ~ mag_diff, data = .)) %>%
                   rowwise () %>%
                   mutate(slope = linmod$coefficients[2]) %>%
                   arrange(slope)
-
+                  
+#For two year schools, create line of best fit model through magnitude difference values across years for each school.
+#Store slope of this line of best fit for each school.
+#Join four_join dataframe to include unitid, inst_name, linmod, and slope variables in final data frame.
+#Order dataframe rows by slope (ascending).
 two_year_final_md <- two_year_md_smsd %>%   
                   group_by(inst_name) %>%
                   do(linmod = lm( year ~ mag_diff, data = .)) %>%
@@ -80,13 +92,21 @@ two_year_final_md <- two_year_md_smsd %>%
 ### Line of Best Fit Using (sqrt) Mean of Squared Differences 
 
 ```{r code3}
+#For four year schools, create line of best fit model through (sqrt) Mean of Squared Differences values across years for each school.
+#Store slope of this line of best fit for each school.
+#Join four_join dataframe to include unitid, inst_name, linmod, and slope variables in final data frame.
+#Order dataframe rows by slope (ascending).
 four_year_final_smsd <- four_year_md_smsd %>%   
                      group_by(inst_name) %>%
                      do(linmod = lm( year ~ smsd, data = .)) %>%
                      rowwise () %>%
                      mutate(slope = linmod$coefficients[2]) %>%
                      arrange(slope)
-
+                     
+#For two year schools, create line of best fit model through (sqrt) Mean of Squared Differences values across years for each school.
+#Store slope of this line of best fit for each school.
+#Join four_join dataframe to include unitid, inst_name, linmod, and slope variables in final data frame.
+#Order dataframe rows by slope (ascending).
 two_year_final_smsd <- two_year_md_smsd %>%   
                     group_by(inst_name) %>%
                     do(linmod = lm( year ~ smsd, data = .)) %>%
@@ -99,11 +119,15 @@ two_year_final_smsd <- two_year_md_smsd %>%
 ### Analyzing common 4 years school
 
 ```{r code4}
+#For four year schools, create rank_md variable to store rank of md slopes across schools.
+#Create rank_smsd variable to store rank of smsd slopes across schools.
 four_year_final_md$rank_md<- rank(four_year_final_md$slope)
 four_year_final_smsd$rank_smsd <- rank(four_year_final_smsd$slope)
 
+#Join four year final md rank dataframe with four year final smsd dataframe.
 common_school <- left_join ( four_year_final_md, four_year_final_smsd, by=c("inst_name"="inst_name"))
 
+#From this larger dataframe select inst_name, rank_md, and rank_smsd variables.
 comparing_four_year_school <- common_school %>%
   select(inst_name, rank_md,rank_smsd)
 
@@ -111,11 +135,15 @@ comparing_four_year_school <- common_school %>%
 
 ### Analyzing common 2 years school
 ```{r code5}
+#For two year schools, create rank_md variable to store rank of md slopes across schools.
+#Create rank_smsd variable to store rank of smsd slopes across schools.
 two_year_final_md$rank_md<- rank(two_year_final_md$slope)
 two_year_final_smsd$rank_smsd <- rank(two_year_final_smsd$slope)
 
+#Join two year final md rank dataframe with two year final smsd dataframe.
 common_school_two_year <- left_join ( two_year_final_md, two_year_final_smsd, by=c("inst_name"="inst_name"))
 
+#From this larger dataframe select inst_name, rank_md, and rank_smsd variables.
 comparing_two_year_school <- common_school_two_year %>%
   select(inst_name, rank_md,rank_smsd)
 
@@ -124,11 +152,13 @@ comparing_two_year_school <- common_school_two_year %>%
 ### Common school plot MD VS SMSD
 
 ```{r code6}
+#Create dot plot to compare four year schools md ranks and smsd ranks.
 plot(comparing_four_year_school$rank_md, comparing_four_year_school$rank_smsd,
      xlab = "MD",
      ylab = "SMSD",
      main = "Rank obtained by MD VS SMSD for 4 year college")
 
+#Create dot plot to compare two year schools md ranks and smsd ranks.
 plot(comparing_two_year_school$rank_md, comparing_two_year_school$rank_smsd,
      xlab = "MD",
      ylab = "SMSD",
