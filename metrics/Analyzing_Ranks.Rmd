@@ -1,5 +1,5 @@
 ---
-title: "Metric Ranks after Cuts"
+title: "Analyzing Ranks after Cuts"
 author: "Emily B., Sagma P."
 date: "`r Sys.Date()`"
 output: openintro::lab_report
