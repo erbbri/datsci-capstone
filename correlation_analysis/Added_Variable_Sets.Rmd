@@ -1,11 +1,12 @@
 ---
-title: "Lab Name"
-author: "Author Name"
+title: "Creating Dataframes for Correlation Analysis"
+author: "Keaton S."
 date: "`r Sys.Date()`"
 output: openintro::lab_report
 ---
 
 ```{r load-packages, message=FALSE}
+#Load essential R packages
 library(tidyverse)
 library(openintro)
 library(educationdata)
@@ -13,11 +14,11 @@ library(educationdata)
 #replace this line with whatever the csv file is called on your computer and the rest should work
 four_year <- read_csv("HEsegDataviz_CollegeData_4-year_v5.csv")
 
-#insert the new code for replacing missing racial data either before or after running metrics, i could not remember what we decided to do about that
+#insert the new code for replacing missing racial data either before or after running metrics, I could not remember what we decided to do about that
 
 ```
 
-### Exercise 1
+### Create Dataframes with Variables of Interest for Correlation Analysis
 
 Accessing the new data and making a data frame
 
