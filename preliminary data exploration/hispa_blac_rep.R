@@ -1,12 +1,14 @@
 library(tidyverse)
 library(ggtext)
 
+#Set up plot aesthetics by altering theme inputs. 
 theme_set(theme_minimal())
 theme_update(text = element_text(family = "Raleway", color = "black", size = 12))
 theme_update(plot.title = element_text(hjust = 0.5, size = 14))
 theme_update(plot.subtitle = element_text(hjust = 0.5, size = 12))
 theme_update(plot.caption = element_text(hjust = 0.5, size = 10, color = "grey40"))
 
+#Filter two year and four year data frames to include only schools data from the South.
 two_year_south <- filter(two_year, 
                       fips_ipeds=="South Carolina" | fips_ipeds== "Alabama"| 
                       fips_ipeds== "Georgia" | fips_ipeds=="Louisiana" | 
@@ -20,12 +22,14 @@ four_year_south <- filter(four_year,
                       fips_ipeds=="Texas" | 
                       fips_ipeds=="Florida")
 
+#Filter two year and four year south dataframes to only include instituations' data from the year 2017.
 two_year_south_2017 <- filter(two_year_south, year=="2017")
 four_year_south_2017 <- filter(four_year_south, year=="2017")
 four_year_south_2017 <- four_year_south_2017 %>%
                         filter(more_selective == 1)
 view(four_year_south_2017)
 
+#Create bar chart to show Black Represenation in Deep South in 2017 in More Selective Institutions. 
 ggplot(four_year_south_2017, aes(x= fips_ipeds, y= dif_black, fill=inst_name))+
   geom_bar(stat = "identity", position = "dodge", width=0.5)+
   scale_fill_hue(c = 40) +
@@ -38,7 +42,7 @@ ggplot(four_year_south_2017, aes(x= fips_ipeds, y= dif_black, fill=inst_name))+
         plot.caption =  element_markdown()) +
   theme(legend.position = "none") 
 
-
+#Create bar chart to show Hispanic Represenation in Deep South in 2017 in More Selective Institutions. 
 ggplot(four_year_south_2017, aes(x= fips_ipeds, y= dif_hispa, fill=inst_name))+
   geom_bar(stat = "identity", position = "dodge", width=0.5)+
   scale_fill_hue(c = 40) +
