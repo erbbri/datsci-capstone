@@ -25,11 +25,14 @@ view(four_year)
 Filtering data sets to get More selective public and More selective private universities. 
 
 ```{r}
+#Subset four year dataframe to include only More Selective institutions. 
 four_year_moreSelective <- subset(four_year,fourcat == "Public More Selective" | fourcat == "Private More Selective")
 
+#Filter four year more selective dataframe to include only the year 2017. 
 four_year_moreSelective_2017 <- subset(four_year_moreSelective, year == "2017")
 view(four_year_moreSelective_2017)
 
+#Sumamrize four year more selective 2017 dataframe to find mean of all racial categories diff values (mean of different races representation gaps). 
 four_year_moreSelective_2017_avg <- four_year_moreSelective_2017  %>%
   group_by(fourcat) %>%
   summarize(
@@ -43,8 +46,10 @@ four_year_moreSelective_2017_avg <- four_year_moreSelective_2017  %>%
   )
 four_year_moreSelective_2017_avg
 
+#Pivot four year more selective 2017 average longer by races and average diff values.
 colleges_2017 <-pivot_longer(four_year_moreSelective_2017_avg, cols=c(White,Hispanic, Black, Asian,  American_Indian,  Pacific_Islander, Multiracial), names_to="Race", values_to="Average_dif")
 
+#Plot this colleges 2017 dataset as a bar chart to show Average Racial Representation Gaps for Four years colleges in 2017 based on inst. type.
 ggplot(colleges_2017, aes(fill= fourcat , y = Average_dif, x = Race))+
   geom_bar(position = "dodge", stat="identity") +
   labs(title="Racial Representaion of Four-Year Colleges in 2017",
