@@ -234,12 +234,118 @@ final_modeling_set <- mag_diff_set %>%
   left_join(four_year_md_final, by=c('unitid'))
 ```
 
-### Exercise 1
+### Initial Correlation Plots
 
 Insert any text here.
 
-```{r code-chunk-label}
-# Insert code for Exercise 1 here
+```{r}
+#All datavalues in frame must be numeric to assess correlation 
+corr_data <- final_one_year_correlation_set %>%
+  select (rank_md,
+          public,
+          private,
+          forprofit,
+          selective,
+          more_selective,
+          non_selective,
+          total_enrollment,
+          number_applied,
+          number_admitted,
+          number_enrolled,
+          rev_total_current,
+          sch_total_student_aid,
+          exp_instruc_total,
+          tuition_fees_ft,
+          tuition_fees_published,
+          room_board,
+          student_faculty_ratio,
+          endow_total,
+          faminc_mean,
+          faminc_med,
+          grant_recipients_unitid,
+          value_grants_disbursed_unitid,
+          loan_recipients_unitid,
+          value_loan_disbursements_unitid,
+          campus_award_recipients_unitid,
+          value_campus_disbursed_unitid)
+
+new_corr_data <- rename(corr_data, 
+       "rank" = rank_md, 
+       "pub" = public,
+       "pri" = private,
+       "fp" = forprofit,
+       "sel" = selective,
+       "m_sel" = more_selective,
+       "n_sel" = non_selective,
+       "tot_enr" = total_enrollment,
+       "num_app" = number_applied,
+       "num_adm" = number_admitted,
+       "num_enr"  = number_enrolled,
+       "rev_tot" = rev_total_current,
+       "sch_stu_aid" = sch_total_student_aid,
+       "exp_ins" = exp_instruc_total,
+       "tui_fee_ft" = tuition_fees_ft,
+       "tui_fee_pub" = tuition_fees_published,
+       "rm_bd" = room_board,
+       "stufac_rat" = student_faculty_ratio,
+       "endow" = endow_total,
+       "fam_mea" = faminc_mean,
+       "fam_med" = faminc_med,
+       "grant_rec" = grant_recipients_unitid,
+       "vl_gr_dis" = value_grants_disbursed_unitid,
+       "ln_rec" = loan_recipients_unitid,
+       "vl_ln_dis" = value_loan_disbursements_unitid,
+       "camp_aw_rec" = campus_award_recipients_unitid,
+       "vl_camp_dis" = value_campus_disbursed_unitid)
+
+corr_data_one <- new_corr_data %>%
+  select(rank,
+         pub,
+         pri,
+         fp,
+         sel,
+         m_sel,
+         n_sel,
+         tot_enr)
+
+corr_data_two <- new_corr_data %>%
+  select(rank,
+         num_app,
+         num_adm,
+         num_enr,
+         rev_tot,
+         sch_stu_aid,
+         exp_ins,
+         tui_fee_ft,
+         tui_fee_pub)
+
+corr_data_three <- new_corr_data %>%
+  select(rank,
+         rm_bd,
+         stufac_rat,
+         endow,
+         fam_mea,
+         fam_med,
+         grant_rec,
+         vl_gr_dis)
+
+corr_data_four <- new_corr_data %>%
+  select(rank,
+         ln_rec,
+         vl_ln_dis,
+         camp_aw_rec,
+         vl_camp_dis)
+
+
+M1 = cor(corr_data_one)
+M2 = cor(corr_data_two)
+M3 = cor(corr_data_three)
+M4 = cor(corr_data_four)
+
+corrplot(M1, method = 'number')
+corrplot(M2, method = 'number')
+corrplot(M3, method = 'number')
+corrplot(M4, method = 'number')
 ```
 
 
