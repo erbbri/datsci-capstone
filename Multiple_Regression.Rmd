@@ -1,0 +1,65 @@
+---
+title: "Lab Name"
+author: "Author Name"
+date: "`r Sys.Date()`"
+output: openintro::lab_report
+---
+  
+```{r load-packages, message=FALSE}
+library(tidyverse)
+library(openintro)
+library(HH)
+library(leaps)
+
+
+Additiona_data <- read.csv("Additiona_data.csv")
+```
+
+### checking the corelation
+``{r }
+cor(Additiona_data[,c(2:9),(13: 22)])
+cor(Additiona_data[,c(3,3:8)])
+```
+
+
+summary(m1)
+# I did not include room_board because room and bored had a lot of NA's. I tried putting it but game me a bunch of errors. I also did not include religious affiliation as well.
+```
+### Model will all variables to check the p-value
+```{r }
+m1 <- lm(mag_diff ~ number_applied + number_admitted + number_enrolled + rev_total_current+ sch_total_student_aid  + exp_instruc_total + tuition_fees_published + tuition_fees_ft  + student_faculty_ratio + endow_total+ faminc_mean + faminc_mean + value_grants_disbursed_unitid + loan_recipients_unitid + value_loan_disbursements_unitid + campus_award_recipients_unitid  + value_campus_disbursed_unitid, data=Additiona_data)
+
+summary(m1)
+# I did not include room_board because room and bored had a lot of NA's. I tried putting it but game me a bunch of errors. I also did not include religious affiliation as well.
+```
+
+### After removing the variables that has insignificant p-value.
+```{r }
+m2 <- lm(mag_diff ~ number_applied  + number_enrolled + rev_total_current + student_faculty_ratio + endow_total+ faminc_mean + faminc_mean + value_grants_disbursed_unitid + loan_recipients_unitid + value_loan_disbursements_unitid + campus_award_recipients_unitid, data=Additiona_data)
+
+summary(m2)
+ # I did not include room_board because room and bored had a lot of NA's. I tried putting iut but game me a bunch of errors. I also did not include religious affiliation as well.
+```
+
+### Backward section
+```{r }
+m.all <- lm(mag_diff ~ number_applied + number_admitted + number_enrolled + rev_total_current+ sch_total_student_aid  + exp_instruc_total + tuition_fees_published + tuition_fees_ft  + student_faculty_ratio + endow_total+ faminc_mean + faminc_mean + value_grants_disbursed_unitid + loan_recipients_unitid + value_loan_disbursements_unitid + campus_award_recipients_unitid  + value_campus_disbursed_unitid, data=Additiona_data)
+
+MSE=(summary(m.all)$sigma)^2
+step(m.all, scale=MSE, direction="backward")
+```
+
+### Model after Backward section
+```{r }
+m3 <- lm(mag_diff ~ value_campus_disbursed_unitid + sch_total_student_aid + rev_total_current  + endow_total + tuition_fees_published + campus_award_recipients_unitid + student_faculty_ratio + value_loan_disbursements_unitid + number_applied  + number_enrolled  + loan_recipients_unitid + value_grants_disbursed_unitid + faminc_mean, data=Additiona_data)
+
+summary(m3)
+
+plot(modelm3$resid ~ modelm3$fitted)
+qqPlot(modelm3$resid)
+```
+
+### Forward selection
+```{r }
+
+```
