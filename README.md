@@ -3,7 +3,7 @@ Our final project for Data &amp; Society, exploring racial and ethnic representa
 
 ### Our Research Question
 
-"What do colleges who are closing the racial overrepresentation and underrepresentation gaps at a quicker rate (2009-2017) have in common as opposed to others with continually large gaps?"
+"What do colleges who are closing the racial overrepresentation and underrepresentation gaps at a quicker rate (2009-2017) have in common as opposed to others with constant or increasing gaps"
 
 ### Our Data
 
