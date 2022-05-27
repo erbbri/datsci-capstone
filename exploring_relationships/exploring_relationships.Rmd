@@ -1,0 +1,45 @@
+---
+title: "Exploring Relationships"
+author: "Emily Bogle"
+date: "`r Sys.Date()`"
+output: openintro::lab_report
+---
+
+```{r load-packages, message=FALSE}
+library(tidyverse)
+library(openintro)
+library(corrplot)
+```
+
+### Exercise 1
+
+Insert any text here.
+
+```{r code-chunk-label}
+# Insert code for Exercise 1 here
+```
+
+### Exercise 1
+
+Insert any text here.
+
+```{r code-chunk-label}
+# Insert code for Exercise 1 here
+```
+
+### Exercise 1
+
+Insert any text here.
+
+```{r code-chunk-label}
+# Insert code for Exercise 1 here
+```
+
+### Exercise 1
+
+Insert any text here.
+
+```{r code-chunk-label}
+# Insert code for Exercise 1 here
+```
+
