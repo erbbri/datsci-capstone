@@ -11,11 +11,19 @@ library(openintro)
 library(corrplot)
 ```
 
+### Importing and Wrangling Data
+
+
+
+```{r code1}
+four_year <- read_csv("CollegeData_4-year.csv")
+```
+
 ### Exercise 1
 
 Insert any text here.
 
-```{r code-chunk-label}
+```{r code2}
 # Insert code for Exercise 1 here
 ```
 
@@ -23,7 +31,7 @@ Insert any text here.
 
 Insert any text here.
 
-```{r code-chunk-label}
+```{r code3}
 # Insert code for Exercise 1 here
 ```
 
@@ -31,15 +39,7 @@ Insert any text here.
 
 Insert any text here.
 
-```{r code-chunk-label}
-# Insert code for Exercise 1 here
-```
-
-### Exercise 1
-
-Insert any text here.
-
-```{r code-chunk-label}
+```{r code4}
 # Insert code for Exercise 1 here
 ```
 
