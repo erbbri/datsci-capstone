@@ -16,15 +16,94 @@ library(corrplot)
 
 
 ```{r code1}
+#Load four year colleges cvs
 four_year <- read_csv("CollegeData_4-year.csv")
+
+#Replace any missing N/A racial data in any given year for any given school with average of other years data
+four_year <- four_year %>%
+  mutate_at(vars(col_white, mkt_white, dif_white,
+                 col_hispa, mkt_hispa, dif_hispa,
+                 col_black, mkt_black, dif_black,
+                 col_asian, mkt_asian, dif_asian,
+                 col_amind, mkt_amind, dif_amind,
+                 col_pacis, mkt_pacis, dif_pacis,
+                 col_twora, mkt_twora, dif_twora), 
+            ~replace_na(.,mean(., na.rm = TRUE)))
+
+
+four_year_clean <- four_year %>%
+                  select(unitid, year, fips_ipeds, inst_name, dif_white, dif_amind, dif_asian, dif_black,
+                        dif_pacis, dif_twora, dif_hispa)
+
+#NOTE: this will take a second to complete, green bar is good!, wait until it disappears 
+four_year_md <- four_year_clean %>%
+                  rowwise () %>%
+                  mutate(mag_diff = sum(abs(dif_white), abs(dif_hispa), abs(dif_black),
+                                            abs(dif_asian), abs(dif_amind), abs(dif_pacis),
+                                            abs(dif_twora), na.rm = T))
+
+###Cutting out schools with two or more years of data missing
+four_year_keeper_list<- four_year_md %>%
+                    group_by(unitid) %>%
+                    summarize(count=n()) %>%
+                    filter(count == 9 | count == 8)
+
+four_year_md_cut <- four_year_md_smsd %>%
+                    filter(unitid %in% four_year_keeper_list$unitid)
+
+four_year_join <- four_year_md_cut %>%
+          group_by(unitid) %>%
+          summarise(avgdif_white = mean(dif_white), 
+                    avgdif_amind = mean(dif_amind),
+                    avgdif_asian = mean(dif_asian),
+                    avgdif_black = mean(dif_black),
+                    avgdif_pacis = mean(dif_pacis),
+                    avgdif_twora = mean(dif_twora),
+                    avgdif_hispa = mean(dif_hispa),
+                    avgdif_magdif = (mean(mag_diff)))
+
+four_year_final_md <- four_year_md_cut %>%   
+                  group_by(unitid) %>%
+                  do(linmod = lm( mag_diff ~ year, data = .)) %>%
+                  rowwise () %>%
+                  mutate(slope = linmod$coefficients[2]) %>%
+                  arrange(slope)
+
+four_year_md_join <- left_join(four_year_join, four_year_final_md, by=c('unitid'='unitid')) %>%
+                  select(unitid, linmod, slope,
+                    avgdif_white, 
+                    avgdif_amind,
+                    avgdif_asian,
+                    avgdif_black,
+                    avgdif_pacis,
+                    avgdif_twora,
+                    avgdif_hispa,
+                    avgdif_magdif)
+four_year_md_final_race <- four_year_md_join %>%
+                    arrange(slope)
+
+#For four year schools, create rank_md variable to store rank of md slopes across schools.
+four_year_md_final_race$rank_md<- rank(four_year_md_final$slope)
+
+four_year_race_corr <- four_year_md_final_race %>%
+                      select(avgdif_white, 
+                    avgdif_amind,
+                    avgdif_asian,
+                    avgdif_black,
+                    avgdif_pacis,
+                    avgdif_twora,
+                    avgdif_hispa,
+                    avgdif_magdif,
+                    rank_md)
 ```
 
-### Exercise 1
+### Correlation Matrices
 
-Insert any text here.
+
 
 ```{r code2}
-# Insert code for Exercise 1 here
+M1 = cor(four_year_race_corr)
+corrplot(M1, method ='number')
 ```
 
 ### Exercise 1
