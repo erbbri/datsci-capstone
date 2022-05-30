@@ -11,9 +11,7 @@ library(openintro)
 library(corrplot)
 ```
 
-### Importing and Wrangling Data
-
-
+### Importing and Wrangling Data for Race Corrplot
 
 ```{r code1}
 #Load four year colleges cvs
@@ -97,21 +95,37 @@ four_year_race_corr <- four_year_md_final_race %>%
                     rank_md)
 ```
 
-### Correlation Matrices
-
-
+### Correlation Matrix for Race and Rank
 
 ```{r code2}
 M1 = cor(four_year_race_corr)
 corrplot(M1, method ='number')
 ```
 
-### Exercise 1
+### Wrangling Data for Institution Type Corrpot
 
-Insert any text here.
 
 ```{r code3}
-# Insert code for Exercise 1 here
+four_year_inst_type_join <- four_year %>%
+  select(unitid, public, private, forprofit, selective, more_selective, non_selective) %>%
+  group_by(unitid) %>%
+  summarise(public = mean(public),
+            private = mean(private),
+            forprofit = mean(forprofit),
+            selective = mean(selective),
+            more_selective = mean(more_selective),
+            non_selective = mean(non_selective))
+
+four_year_inst_type_corr <- left_join(four_year_md_final, four_year_inst_type_join, by=c('unitid'='unitid')) %>%
+  select(public, private, forprofit, selective, more_selective, non_selective, rank_md)
+
+```
+
+### Correlation Matrix for Inst. Type and Rank
+
+```{r code789}
+M2 = cor(four_year_inst_type_corr)
+corrplot(M2, method ='number')
 ```
 
 ### Exercise 1
