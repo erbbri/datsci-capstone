@@ -128,11 +128,43 @@ M2 = cor(four_year_inst_type_corr)
 corrplot(M2, method ='number')
 ```
 
+### Wrangling Data for Institution Type and Mag_Diff Corrpot
+
+
+```{r code3}
+four_year_type_magdiff <- four_year %>%
+  select(unitid, public, private, forprofit, selective, non_selective, more_selective, dif_white, 
+         dif_amind, dif_asian, dif_black, dif_pacis, dif_twora, dif_hispa) %>%
+  rowwise()%>%
+  mutate(mag_diff = sum(abs(dif_white), abs(dif_hispa), abs(dif_black),
+                                            abs(dif_asian), abs(dif_amind), abs(dif_pacis),
+                                            abs(dif_twora), na.rm = T)) %>%
+  group_by(unitid) %>%
+  summarise(public = mean(public),
+            private = mean(private),
+            forprofit = mean(forprofit),
+            selective = mean(selective),
+            more_selective = mean(more_selective),
+            non_selective = mean(non_selective),
+            avg_magdiff = mean(mag_diff))
+
+four_year_type_avgmagdiff_corr <- four_year_type_magdiff %>%
+  select(public, private, forprofit, selective, more_selective, non_selective, avg_magdiff)
+
+```
+
+### Correlation Matrix for Inst. Type and Avg Mag_Diff
+
+```{r code789}
+M3 = cor(four_year_type_avgmagdiff_corr)
+corrplot(M3, method ='number')
+```
+
 ### Exercise 1
 
 Insert any text here.
 
-```{r code4}
-# Insert code for Exercise 1 here
+```{r code457}
+
 ```
 
