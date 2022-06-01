@@ -1,6 +1,6 @@
 ---
 title: "Exploring Relationships"
-author: "Emily Bogle"
+author: ""
 date: "`r Sys.Date()`"
 output: openintro::lab_report
 ---
@@ -191,13 +191,6 @@ sixseven<- four_year %>%
 M4 = cor(sixseven)
 corrplot(M4, method ='number', title = "2017 Four-Year Institutions", 
          tl.col="black", mar=c(0,0,1.5,0), tl.offset = 0.5) 
-
-  
-
-
-
-
-
 ```
 
 ### Exercise 1
