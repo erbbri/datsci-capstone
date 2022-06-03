@@ -58,11 +58,11 @@ two_year_md_smsd <- two_year_clean %>%
 four_year_keeper_list<- four_year_md_smsd %>%
                     group_by(unitid) %>%
                     summarize(count=n()) %>%
-                    filter(count == 9) 
+                    filter(count >7) 
 two_year_keeper_list<- two_year_md_smsd %>%
                     group_by(unitid) %>%
                     summarize(count=n()) %>%
-                    filter(count == 9) 
+                    filter(count > 7) 
 four_year_md_cut <- four_year_md_smsd %>%
                     filter(unitid %in% four_year_keeper_list$unitid)
 two_year_md_cut <- two_year_md_smsd %>%

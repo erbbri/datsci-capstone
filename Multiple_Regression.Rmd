@@ -10,21 +10,269 @@ library(tidyverse)
 library(openintro)
 library(HH)
 library(leaps)
-
+library(ggplot2)
 
 Additiona_data <- read.csv("Additiona_data.csv")
-```
-
-### checking the corelation
-``{r }
-cor(Additiona_data[,c(2:9),(13: 22)])
-cor(Additiona_data[,c(3,3:8)])
 ```
 
 
 summary(m1)
 # I did not include room_board because room and bored had a lot of NA's. I tried putting it but game me a bunch of errors. I also did not include religious affiliation as well.
+
+
+### number_admitted
+```{r }
+m1 <- lm(log(mag_diff) ~ number_applied, data=Additiona_data)
+summary(m1)
+plot(m1$resid ~ m1$fitted)
+abline(h=0)
+qqPlot(m1$resid)
 ```
+
+```{r } 
+#neverr large than o becasue of the cut off (so we will have lower R squared and that is okay)
+#scatter plot 
+#use just the ggplot rather than basic 
+#add smoother , geom smooth
+#will give the trends so it suggest if oit is liner or not
+
+m2 <- lm(mag_diff ~ number_admitted, data=Additiona_data)
+summary(m2)
+ggplot(Additiona_data, aes(x= log10 (number_admitted), y= mag_diff ))+
+  geom_point() +  geom_smooth() +
+  labs(title=" number_admitted vs Manitute difference",
+         y = " Magnitute difference",
+         x = " number_admitted")
+```
+
+```{r } 
+
+plot(mag_diff ~ number_admitted , data=Additiona_data)
+plot(log(mag_diff) ~ number_admitted , data=Additiona_data)
+plot(m2$resid ~ m2$fitted)
+abline(h=0)
+qqPlot(m2$resid)
+
+ggplot(Additiona_data, aes(x= log10(number_admitted), y=log(mag_diff) ))+
+  geom_point() +  geom_smooth() +
+  labs(title="Number of student admitted vs Magnitutude Difference",
+         y = "Magnitute difference",
+         x = "Number Admitted")
+```
+
+```{r }
+a1 <- lm(log(mag_diff) ~ number_applied + number_admitted, data=Additiona_data)
+vif(a1)  
+plot(a1$resid ~ a1$fitted)
+abline(h=0)
+qqPlot(a1$resid)
+```
+
+### number_enrolled
+```{r }
+m3 <- lm(log(mag_diff) ~ number_enrolled, data=Additiona_data)
+summary(m3)
+
+ggplot(Additiona_data, aes(x= log10(number_enrolled), y= mag_diff ))+
+  geom_point() +  geom_smooth() +
+  labs(title="Number of student enrolled vs Manitute difference",
+         y = "Magnitute difference",
+         x = "number Enrolled")
+
+plot(m3$resid ~ m3$fitted)
+abline(h=0)
+qqPlot(m3$resid)
+```
+
+```{r }
+#VIF more than 5 so i am thinking lets not include number_enrolled
+a2 <- lm(log(mag_diff) ~ number_applied + number_admitted + number_enrolled, data=Additiona_data)
+summary(a2)
+vif(a2) 
+plot(a2$resid ~ a2$fitted)
+abline(h=0)
+qqPlot(a2$resid)
+```
+
+```{r }
+m4 <- lm(log(mag_diff) ~  rev_total_current, data=Additiona_data)
+summary(m4)
+
+ggplot(Additiona_data, aes(x= log10 (rev_total_current), y= mag_diff ))+
+  geom_point() +  geom_smooth() +
+  labs(title="rev_total_current vs Magnitute differenc difference",
+         y = "Magnitute difference",
+         x = " rev_total_current")
+plot(m4$resid ~ m4$fitted)
+abline(h=0)
+qqPlot(m4$resid)
+```
+
+
+```{r }
+#VIF more than 5 for number applied so removing it
+a3 <- lm(mag_diff ~ number_applied + number_admitted + rev_total_current, data=Additiona_data)
+summary(m4)
+vif(a3) 
+
+m5 <- lm(mag_diff ~  sch_total_student_aid, data=Additiona_data)
+summary(m5)
+ggplot(Additiona_data, aes(x= log10 ( sch_total_student_aid), y= mag_diff ))+
+  geom_point() +  geom_smooth() +
+  labs(title=" sch_total_student_aid vs Manitute difference",
+         y = " sch_total_student_aid",
+         x = " rev_total_current")
+
+```
+
+```{r }
+a4 <- lm(mag_diff ~  number_admitted + rev_total_current + sch_total_student_aid, data=Additiona_data)
+summary(a4)
+vif(a4) 
+
+
+m6 <- lm(mag_diff ~  exp_instruc_total, data=Additiona_data)
+summary(m6)
+ggplot(Additiona_data, aes(x= log10 (exp_instruc_total), y= log(mag_diff) ))+
+  geom_point() +  geom_smooth() +
+  labs(title=" exp_instruc_total vs Manitute difference",
+         y = " sch_total_student_aid",
+         x = " exp_instruc_total")
+```
+
+```{r }
+a5 <- lm(mag_diff ~  number_admitted + rev_total_current + sch_total_student_aid + exp_instruc_total , data=Additiona_data)
+summary(a5)
+vif(a5) 
+# vif greater than 5 for exp_instruc_total  
+
+m7 <- lm(mag_diff ~   tuition_fees_published , data=Additiona_data)
+summary(m7)
+ggplot(Additiona_data, aes(x= log10 ( tuition_fees_published), y= log(mag_diff) ))+
+  geom_point() +  geom_smooth() +
+  labs(title="  tuition_fees_published vs Manitute difference",
+         y = " sch_total_student_aid",
+         x = " tuition_fees_published")
+```
+
+```{r }
+a6 <- lm(mag_diff ~  number_admitted + rev_total_current + sch_total_student_aid + tuition_fees_published , data=Additiona_data)
+summary(a6)
+vif(a6) 
+
+
+m8 <- lm(mag_diff ~   tuition_fees_ft, data=Additiona_data)
+summary(m8)
+ 
+```
+
+```{r }
+a7 <- lm(mag_diff ~  number_admitted + rev_total_current + sch_total_student_aid + tuition_fees_published + tuition_fees_ft  , data=Additiona_data)
+summary(a7)
+vif(a7) 
+#tuition_fees_published  and  tuition_fees_ft Vif very large
+
+m9 <- lm(mag_diff ~   student_faculty_ratio , data=Additiona_data)
+summary(m9)
+ggplot(Additiona_data, aes(x=  (student_faculty_ratio ), y= log(mag_diff) ))+
+  geom_point() +  geom_smooth() +
+  labs(title="Student_faculty_ratio  vs Manitute difference",
+         y = "Magnitute Difference",
+         x = " student_faculty_ratio ")
+```
+
+```{r }
+a8 <- lm(mag_diff ~  number_admitted + rev_total_current + sch_total_student_aid + student_faculty_ratio , data=Additiona_data)
+summary(a8)
+vif(a8)
+# good so far
+
+m10 <- lm(mag_diff ~   endow_total , data=Additiona_data)
+summary(m10)
+ggplot(Additiona_data, aes(x=  (endow_total), y= log(mag_diff) ))+
+  geom_point() +  geom_smooth() +
+  labs(title="endow_total  vs Manitute difference",
+         y = "Magnitute Difference",
+         x = " endow_total ")
+```
+
+```{r }
+a8 <- lm(mag_diff ~  number_admitted + rev_total_current + sch_total_student_aid + student_faculty_ratio +endow_total  , data=Additiona_data)
+summary(a8)
+vif(a8)
+#good so far but still very bad r squared
+
+m11 <- lm(mag_diff ~   faminc_mean, data=Additiona_data)
+summary(m11)
+ggplot(Additiona_data, aes(x=  (faminc_mean), y= log(mag_diff) ))+
+  geom_point() +  geom_smooth() +
+  labs(title="endow_total  vs Manitute difference",
+         y = "Magnitute Difference",
+         x = "faminc_mean")
+```
+
+```{r }
+a9 <- lm(mag_diff ~  number_admitted + rev_total_current + sch_total_student_aid + student_faculty_ratio +endow_total +  faminc_mean  , data=Additiona_data)
+summary(a9)
+vif(a9)
+#good so far but still very bad r squared
+
+m12 <- lm(mag_diff ~  value_grants_disbursed_unitid  , data=Additiona_data)
+summary(m12)
+
+a10 <- lm(mag_diff ~  number_admitted + rev_total_current + sch_total_student_aid + student_faculty_ratio +endow_total +  faminc_mean + value_grants_disbursed_unitid   , data=Additiona_data)
+summary(a10)
+vif(a10)
+#good so far but still very bad r squared
+
+m13 <- lm(mag_diff ~  loan_recipients_unitid, data=Additiona_data)
+summary(m13)
+
+a10 <- lm(mag_diff ~  number_admitted + rev_total_current + sch_total_student_aid + student_faculty_ratio +endow_total +  faminc_mean + value_grants_disbursed_unitid + loan_recipients_unitid  , data=Additiona_data)
+summary(a10)
+vif(a10)
+#good so far but still very bad r squared
+
+m14<- lm(mag_diff ~  value_loan_disbursements_unitid, data=Additiona_data)
+summary(m14)
+
+a11 <- lm(mag_diff ~  number_admitted + rev_total_current + sch_total_student_aid + student_faculty_ratio +endow_total +  faminc_mean + value_grants_disbursed_unitid + loan_recipients_unitid + value_loan_disbursements_unitid  , data=Additiona_data)
+summary(a11)
+vif(a11)
+#value_loan_disbursements_unitid  vif more than 5
+
+m15 <- lm(mag_diff ~  campus_award_recipients_unitid , data=Additiona_data)
+summary(m15)
+
+a12 <- lm(mag_diff ~  number_admitted + rev_total_current + sch_total_student_aid + student_faculty_ratio +endow_total +  faminc_mean + value_grants_disbursed_unitid + loan_recipients_unitid + campus_award_recipients_unitid  , data=Additiona_data)
+summary(a12)
+vif(a12)
+#good so far but still very bad r squared
+
+m16 <- lm(mag_diff ~  value_campus_disbursed_unitid, data=Additiona_data)
+summary(m16)
+
+a13 <- lm(mag_diff ~  number_admitted + rev_total_current + sch_total_student_aid + student_faculty_ratio +endow_total +  faminc_mean + value_grants_disbursed_unitid + loan_recipients_unitid + campus_award_recipients_unitid +  value_campus_disbursed_unitid  , data=Additiona_data)
+summary(a13)
+vif(a13)
+# value_campus_disbursed_unitid vip more than 5
+```
+
+```{r }
+# best from this method
+a13 <- lm(log(mag_diff) ~  number_admitted + rev_total_current + sch_total_student_aid + student_faculty_ratio +endow_total +  faminc_mean + value_grants_disbursed_unitid + loan_recipients_unitid + campus_award_recipients_unitid, data=Additiona_data)
+summary(a13)
+plot(a13$resid ~a13$fitted)
+abline(h=0)
+library(car)
+qqPlot(a13$resid)
+
+```
+
+
+
+
+
 ### Model will all variables to check the p-value
 ```{r }
 m1 <- lm(mag_diff ~ number_applied + number_admitted + number_enrolled + rev_total_current+ sch_total_student_aid  + exp_instruc_total + tuition_fees_published + tuition_fees_ft  + student_faculty_ratio + endow_total+ faminc_mean + faminc_mean + value_grants_disbursed_unitid + loan_recipients_unitid + value_loan_disbursements_unitid + campus_award_recipients_unitid  + value_campus_disbursed_unitid, data=Additiona_data)
@@ -55,11 +303,20 @@ m3 <- lm(mag_diff ~ value_campus_disbursed_unitid + sch_total_student_aid + rev_
 
 summary(m3)
 
-plot(modelm3$resid ~ modelm3$fitted)
-qqPlot(modelm3$resid)
+plot(m3$resid ~ m3$fitted)
+abline(h=0)
+library(car)
+qqPlot(m3$resid)
+
+m4 <- lm(mag_diff ~ rev_total_current  + endow_total + tuition_fees_published + campus_award_recipients_unitid + student_faculty_ratio + value_loan_disbursements_unitid + number_applied  + number_enrolled  + loan_recipients_unitid + value_grants_disbursed_unitid + faminc_mean, data=Additiona_data)
+summary(m4)
+plot(m4$resid ~ m4$fitted)
+abline(h=0)
+qqPlot(m4$resid)
 ```
 
 ### Forward selection
 ```{r }
-
+m.none<-lm(mag_diff~1, data=Additiona_data)
+m.forward<-step(m.none, scope=list(upper=m.all), scale=MSE, direction="forward")
 ```

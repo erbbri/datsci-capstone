@@ -1,0 +1,316 @@
+---
+title: "Lab Name"
+author: "Author Name"
+date: "`r Sys.Date()`"
+output: openintro::lab_report
+---
+
+```{r load-packages, message=FALSE}
+library(tidyverse)
+library(openintro)
+library(car)
+library(HH)
+library(leaps)
+library(ggplot2)
+
+Additiona_data <- read.csv("Additiona_data.csv")
+
+data("Additiona_data")
+
+```
+
+```{r}
+cor(Additiona_data)
+```
+
+### "number_applied" 
+```{r}
+model_1 <- lm((mag_diff) ~ number_applied, data=Additiona_data)
+summary(m1)
+ggplot(Additiona_data, aes(x=(number_applied), y= mag_diff ))+
+  geom_point() +  geom_smooth() +
+  labs(title=" number_applied vs Manitute difference",
+         y = " Magnitute difference",
+         x = " number_applied)")
+
+
+m1 <- lm(log(mag_diff) ~ number_applied, data=Additiona_data)
+summary(m1)
+ggplot(Additiona_data, aes(x= log10 (number_applied), y= mag_diff ))+
+  geom_point() +  geom_smooth() +
+  labs(title=" number_applied vs Manitute difference",
+         y = " Magnitute difference",
+         x = " number_applied)")
+
+plot(m1$resid ~ m1$fitted)
+abline(h=0)
+qqPlot(m1$resid)
+```
+
+###  "number_admitted"  
+```{r}
+m2 <- lm(log(mag_diff) ~ number_applied, data=Additiona_data)
+summary(m2)
+ggplot(Additiona_data, aes(x= log10 (number_admitted), y= mag_diff ))+
+  geom_point() +  geom_smooth() +
+  labs(title=" number_admitted vs Manitute difference",
+         y = " Magnitute difference",
+         x = " number_admitted")
+
+plot(m2$resid ~ m2$fitted)
+abline(h=0)
+qqPlot(m2$resid)
+```
+
+### "number_enrolled" 
+```{r}
+m3 <- lm(log(mag_diff) ~ number_enrolled, data=Additiona_data)
+summary(m3)
+ggplot(Additiona_data, aes(x= log10 (number_enrolled), y= mag_diff ))+
+  geom_point() +  geom_smooth() +
+  labs(title=" number_enrolled vs Manitute difference",
+         y = " Magnitute difference",
+         x = " number_enrolled")
+
+plot(m3$resid ~ m3$fitted)
+abline(h=0)
+qqPlot(m3$resid)
+```
+
+### "rev_total_current"
+```{r}
+m4 <- lm(log(mag_diff) ~ rev_total_current, data=Additiona_data)
+summary(m4)
+ggplot(Additiona_data, aes(x= log10 (rev_total_current), y= mag_diff ))+
+  geom_point() +  geom_smooth() +
+  labs(title=" rev_total_current vs Manitute difference",
+         y = " Magnitute difference",
+         x = " rev_total_current")
+
+plot(m4$resid ~ m4$fitted)
+abline(h=0)
+qqPlot(m4$resid)
+```
+
+### "sch_total_student_aid"
+```{r}
+m5 <- lm(log(mag_diff) ~ sch_total_student_aid, data=Additiona_data)
+summary(m5)
+ggplot(Additiona_data, aes(x= log10 (sch_total_student_aid), y= mag_diff ))+
+  geom_point() +  geom_smooth() +
+  labs(title=" sch_total_student_aid vs Manitute difference",
+         y = " Magnitute difference",
+         x = " sch_total_student_aid")
+
+plot(m5$resid ~ m5$fitted)
+abline(h=0)
+qqPlot(m5$resid)
+```
+
+### "exp_instruc_total" 
+```{r}
+m6 <- lm(log(mag_diff) ~ exp_instruc_total, data=Additiona_data)
+summary(m6)
+ggplot(Additiona_data, aes(x= log10 (exp_instruc_total), y= mag_diff ))+
+  geom_point() +  geom_smooth() +
+  labs(title=" exp_instruc_total vs Manitute difference",
+         y = " Magnitute difference",
+         x = " exp_instruc_total")
+
+plot(m6$resid ~ m6$fitted)
+abline(h=0)
+qqPlot(m6$resid)
+```
+
+### "tuition_fees_published"  
+```{r}
+m7 <- lm(log(mag_diff) ~tuition_fees_published, data=Additiona_data)
+summary(m6)
+ggplot(Additiona_data, aes(x= log10 (tuition_fees_published), y= mag_diff ))+
+  geom_point() +  geom_smooth() +
+  labs(title=" tuition_fees_published vs Manitute difference",
+         y = " Magnitute difference",
+         x = " tuition_fees_published")
+
+plot(m7$resid ~ m7$fitted)
+abline(h=0)
+qqPlot(m7$resid)
+```
+
+### "tuition_fees_ft"  
+```{r}
+m8 <- lm(log(mag_diff) ~ tuition_fees_ft, data=Additiona_data)
+summary(m6)
+ggplot(Additiona_data, aes(x= log10 ( tuition_fees_ft), y= mag_diff ))+
+  geom_point() +  geom_smooth() +
+  labs(title=" tuition_fees_ft vs Manitute difference",
+         y = " Magnitute difference",
+         x = "tuition_fees_ft")
+
+plot(m8$resid ~ m8$fitted)
+abline(h=0)
+qqPlot(m8$resid)
+```
+
+###  "student_faculty_ratio" 
+```{r}
+m9 <- lm(log(mag_diff) ~ student_faculty_ratio, data=Additiona_data)
+summary(m9)
+ggplot(Additiona_data, aes(x= log10 (student_faculty_ratio), y= mag_diff ))+
+  geom_point() +  geom_smooth() +
+  labs(title=" student_faculty_ratio vs Manitute difference",
+         y = " Magnitute difference",
+         x = "student_faculty_ratio")
+
+plot(m9$resid ~ m9$fitted)
+abline(h=0)
+qqPlot(m9$resid)
+```
+
+### "room_board"  
+```{r}
+m10 <- lm(log(mag_diff) ~ room_board, data=Additiona_data)
+summary(m10)
+ggplot(Additiona_data, aes(x= log10 (room_board), y= mag_diff ))+
+  geom_point() +  geom_smooth() +
+  labs(title=" room_board vs Manitute difference",
+         y = " Magnitute difference",
+         x = "room_board")
+
+plot(m10$resid ~ m10$fitted)
+abline(h=0)
+qqPlot(m10$resid)
+```
+
+### "endow_total" 
+```{r}
+m11 <- lm(log(mag_diff) ~ endow_total, data=Additiona_data)
+summary(m10)
+ggplot(Additiona_data, aes(x= log10 (endow_total), y= mag_diff ))+
+  geom_point() +  geom_smooth() +
+  labs(title=" endow_total vs Manitute difference",
+         y = " Magnitute difference",
+         x = "endow_total")
+
+plot(m11$resid ~ m11$fitted)
+abline(h=0)
+qqPlot(m11$resid)
+```
+
+### "faminc_mean"   
+```{r}
+m12 <- lm(log(mag_diff) ~ faminc_mean, data=Additiona_data)
+summary(m12)
+ggplot(Additiona_data, aes(x= log10 (faminc_mean), y= mag_diff ))+
+  geom_point() +  geom_smooth() +
+  labs(title=" faminc_mean vs Manitute difference",
+         y = " Magnitute difference",
+         x = "faminc_mean")
+
+plot(m12$resid ~ m12$fitted)
+abline(h=0)
+qqPlot(m12$resid)
+```
+
+### "grant_recipients_unitid"   
+```{r}
+m13 <- lm(log(mag_diff) ~ grant_recipients_unitid, data=Additiona_data)
+summary(m13)
+ggplot(Additiona_data, aes(x= log10 (grant_recipients_unitid), y= mag_diff ))+
+  geom_point() +  geom_smooth() +
+  labs(title=" grant_recipients_unitid vs Manitute difference",
+         y = " Magnitute difference",
+         x = "grant_recipients_unitid")
+
+plot(m13$resid ~ m13$fitted)
+abline(h=0)
+qqPlot(m13$resid)
+```
+### "faminc_mean"   
+```{r}
+m14 <- lm(log(mag_diff) ~ faminc_mean, data=Additiona_data)
+summary(m13)
+ggplot(Additiona_data, aes(x= log10 (faminc_mean), y= mag_diff ))+
+  geom_point() +  geom_smooth() +
+  labs(title=" faminc_mean vs Manitute difference",
+         y = " Magnitute difference",
+         x = "faminc_mean")
+
+plot(m14$resid ~ m14$fitted)
+abline(h=0)
+qqPlot(m14$resid)
+```
+### "value_grants_disbursed_unitid" 
+```{r}
+m15 <- lm(log(mag_diff) ~value_grants_disbursed_unitid, data=Additiona_data)
+summary(m13)
+ggplot(Additiona_data, aes(x= log10 (value_grants_disbursed_unitid), y= mag_diff ))+
+  geom_point() +  geom_smooth() +
+  labs(title=" value_grants_disbursed_unitid vs Manitute difference",
+         y = " Magnitute difference",
+         x = "value_grants_disbursed_unitid")
+
+plot(m15$resid ~ m15$fitted)
+abline(h=0)
+qqPlot(m15$resid)
+```
+
+### "loan_recipients_unitid" 
+```{r}
+m16 <- lm(log(mag_diff) ~ loan_recipients_unitid, data=Additiona_data)
+summary(m13)
+ggplot(Additiona_data, aes(x= log10 (loan_recipients_unitid), y= mag_diff ))+
+  geom_point() +  geom_smooth() +
+  labs(title=" loan_recipients_unitid vs Manitute difference",
+         y = " Magnitute difference",
+         x = "loan_recipients_unitid")
+
+plot(m16$resid ~ m16$fitted)
+abline(h=0)
+qqPlot(m16$resid)
+```
+
+### "value_loan_disbursements_unitid" 
+```{r}
+m17 <- lm(log(mag_diff) ~ value_loan_disbursements_unitid, data=Additiona_data)
+summary(m13)
+ggplot(Additiona_data, aes(x= log10 (value_loan_disbursements_unitid), y= mag_diff ))+
+  geom_point() +  geom_smooth() +
+  labs(title="value_loan_disbursements_unitid vs Manitute difference",
+         y = " Magnitute difference",
+         x = "value_loan_disbursements_unitid")
+
+plot(m17$resid ~ m17$fitted)
+abline(h=0)
+qqPlot(m17$resid)
+```
+
+### "campus_award_recipients_unitid" 
+```{r}
+m18 <- lm(log(mag_diff) ~ campus_award_recipients_unitid, data=Additiona_data)
+summary(m13)
+ggplot(Additiona_data, aes(x= log10 (campus_award_recipients_unitid), y= mag_diff ))+
+  geom_point() +  geom_smooth() +
+  labs(title="campus_award_recipients_unitid vs Manitute difference",
+         y = " Magnitute difference",
+         x = "campus_award_recipients_unitid")
+
+plot(m18$resid ~ m18$fitted)
+abline(h=0)
+qqPlot(m18$resid)
+```
+
+### "value_campus_disbursed_unitid"  
+```{r}
+m19 <- lm(log(mag_diff) ~ value_campus_disbursed_unitid, data=Additiona_data)
+summary(m13)
+ggplot(Additiona_data, aes(x= log10 (value_campus_disbursed_unitid), y= mag_diff ))+
+  geom_point() +  geom_smooth() +
+  labs(title="value_campus_disbursed_unitid vs Manitute difference",
+         y = " Magnitute difference",
+         x = "value_campus_disbursed_unitid")
+
+plot(m19$resid ~ m19$fitted)
+abline(h=0)
+qqPlot(m19$resid)
+```

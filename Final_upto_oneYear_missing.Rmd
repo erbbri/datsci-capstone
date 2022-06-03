@@ -1,5 +1,5 @@
 ---
-title: "Line of Best Fit Metrics"
+title: "Final School with up to one year of data missing"
 author: "Author Name"
 date: "`r Sys.Date()`"
 output: openintro::lab_report
@@ -58,11 +58,11 @@ two_year_md_smsd <- two_year_clean %>%
 four_year_keeper_list<- four_year_md_smsd %>%
                     group_by(unitid) %>%
                     summarize(count=n()) %>%
-                    filter(count == 9) 
+                    filter(count >= 8) 
 two_year_keeper_list<- two_year_md_smsd %>%
                     group_by(unitid) %>%
                     summarize(count=n()) %>%
-                    filter(count == 9) 
+                    filter(count >= 8) 
 four_year_md_cut <- four_year_md_smsd %>%
                     filter(unitid %in% four_year_keeper_list$unitid)
 two_year_md_cut <- two_year_md_smsd %>%
@@ -168,12 +168,14 @@ comparing_two_year_school <- common_school_two_year %>%
 plot(comparing_four_year_school$rank_md, comparing_four_year_school$rank_smsd,
      xlab = "MD",
      ylab = "SMSD",
-     main = "Rank obtained by MD VS SMSD for 4 year college")
+     main =  "MD VS SMSD Rank for 4 year college",
+     sub = "up to one year missing data")
 
 plot(comparing_two_year_school$rank_md, comparing_two_year_school$rank_smsd,
      xlab = "MD",
      ylab = "SMSD",
-     main = "Rank obtained by MD VS SMSD for 2 year college")
+     main =  "MD VS SMSD Rank for 2 year college",
+     sub = "up to one year missing data")
 
 ```
 ### Calculating the difference in the Rank
