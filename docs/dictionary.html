@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en-ca">
+    <head>
+        <meta charset="utf-8">
+        <title>Report: Data Science Capstone</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="style.css">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+            <a class="navbar-brand" href="index.html">Report</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="dictionary.html">Data Dictionary<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class= "nav-item">
+                        <a class="nav-link" href="sources.html">Sources</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container">
+            <h1>Data Dictionary</h1>
+            <p>This dataset combines public data from the Integrated Postsecondary Education Data System and the US Census Bureau’s 
+                American Community Service in an index of racial and ethnic representativeness of US postsecondary education 
+                institutions. The data set is originally sourced from Integrated Postsecondary Education Data System and US Census
+                 American Community Survey and was developed at the Urban Institute—made available under the ODC-BY 1.0 Attribution 
+                 License. There are two data sets that are based on 4 years and 2 years college representativeness. 
+                 4-year college representativeness contains 34 variables and the 2-year college representativeness contains 30 variables.
+                  The variables are classified and listed below.
+                </p>
+                <br>
+                <hr>
+                <h4>Categorical Variables</h4>
+                <br>
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Variable Name</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">unitid</th>
+                        <td>varchar</td>
+                        <td>Integrated Postsecondary Education Data (IPEDS)  System College ID.</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">year</th>
+                        <td>date</td>
+                        <td>Marks the years data was recorded for the institution.</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">fips_ipeds</th>
+                        <td>varchar</td>
+                        <td>Represents State FIPS code.</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">inst_name</th>
+                        <td>char</td>
+                        <td>Represents name of the institution.</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">slevel</th>
+                        <td>integer</td>
+                        <td>represents Institution Level (4 = "four-year" 2 = "two-year").</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">twocat</th>
+                        <td>char</td>
+                        <td>Represents two-year Institution Category.</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">fourcat</th>
+                        <td>char</td>
+                        <td>Represents four-year Institution Category.</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">public</th>
+                        <td>boolean</td>
+                        <td>Determines if it is a public institution or not.</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">forprofit</th>
+                        <td>boolean</td>
+                        <td>Represents State FIPS code</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">private</th>
+                        <td>boolean</td>
+                        <td>Determines if the institution is a Private Non-Profit Institution or not.</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">selective</th>
+                        <td>boolean</td>
+                        <td>Shows the degree of selectivity an academic institution has.</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">more_selective</th>
+                        <td>boolean</td>
+                        <td>A yes/no of if the institution has a tendency for being more selective for that year.</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">non_selective</th>
+                        <td>boolean</td>
+                        <td>A yes/no of if the institution has a tendency for being non-selective for that year.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <br>
+                  <hr>
+                  <h4>Qualitative Variables</h4>
+                  <br>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Variable Name</th>
+                        <th scope="col">Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">total_enrollment</th>
+                        <td>Total fall enrollment.</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">col_white</th>
+                        <td>College Percent White.</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">mkt_white</th>
+                        <td>Market Percent White (American Community Survey, ages 18 to 24 for four-year institutions, ages 18-54 for two-year institutions).</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">dif_white</th>
+                        <td>College Representation of White Population (College Percent minus Market Percent).</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">col_hispa</th>
+                        <td>College Percent Hispanic.</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">mkt_hispa</th>
+                        <td>Market Percent Hispanic (American Community Survey, ages 18 to 24 for four-year institutions, ages 18-54 for two-year institutions).</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">dif_hispa</th>
+                        <td>College Representation of Hispanic Population (College Percent minus Market Percent).</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">col_black</th>
+                        <td>College Percent Black.</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">mkt_black</th>
+                        <td>Market Percent Black (American Community Survey, ages 18 to 24 for four-year institutions, ages 18-54 for two-year institutions).</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">dif_black</th>
+                        <td>College Representation of Black Population (College Percent minus Market Percent).</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">private</th>
+                        <td>Determines if the institution is a Private Non-Profit Institution or not.</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">col_asian</th>
+                        <td>College Percent Asian.</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">mkt_asian</th>
+                        <td>Market Percent Asian (American Community Survey, ages 18 to 24 for four-year institutions, ages 18-54 for two-year institutions).</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">dif_asian</th>
+                        <td>College Representation of Asian Population (College Percent minus Market Percent).</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">col_amind</th>
+                        <td>College Percent American Indian.</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">mkt_amind</th>
+                        <td>Market Percent American Indian (American Community Survey, ages 18 to 24 for four-year institutions, ages 18-54 for two-year institutions).</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">dif_amind</th>
+                        <td>College Representation of American Indian Population (College Percent minus Market Percent).</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">col_pacis</th>
+                        <td>College Percent Pacific Islander.</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">mkt_pacis</th>
+                        <td>Market Percent Pacific Islander (American Community Survey, ages 18 to 24 for four-year institutions, ages 18-54 for two-year institutions).</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">dif_pacis</th>
+                        <td>College Representation of Pacific Islander Population (College Percent minus Market Percent).</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  
+                  
+
+        </div>
+    </body>
