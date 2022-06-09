@@ -3,9 +3,105 @@
     <head>
         <meta charset="utf-8">
         <title>Report: Data Science Capstone</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="style.css">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    
     </head>
     <body>
-        <h1>My First Heading</h1>
-        <p>My first paragraph.</p>
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+            <a class="navbar-brand" href="index.html">Report</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="index.html">Home<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">Data Dictionary</a>
+                    </li>
+                    <li class= "nav-item">
+                        <a class="nav-link" href="menu.html">Sources</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container">
+        <br>
+        <h2>Introduction</h2>
+        <p>This dataset combines public data from the Integrated 
+            Postsecondary Education Data System and the 
+            US Census Bureau’s American Community Service 
+            in an index of racial and ethnic representativeness 
+            of US postsecondary education institutions. The data set 
+            is originally sourced from Integrated Postsecondary
+             Education Data System and US Census American Community 
+             Survey and was developed at the Urban Institute—made 
+             available under the ODC-BY 1.0 Attribution License. 
+             There are two data sets that are based on 4 years and 
+             2 years college representativeness. 4-year college 
+             representativeness contains 34 variables and the 2-year 
+             college representativeness contains 30 variables.
+            <br>
+            <br>
+            The key variables are the "dif_" variables, which show the 
+            representativeness for each racial category (white, black, 
+            hispanic, asian, pacific islander, native american, mixed) 
+            with a numerical value determined by subtracting a school's
+             percent enrollment of a certain racial group by the percent 
+             of this group in a school's respective market. The market 
+             was determined by the dividing the schools into urbanicity 
+             categories (urban, suburban, rural) and determining how far 
+             students travel to reach the school. Market distances 
+             differed between both 2 and 4 year college groups and 
+             urbanicity groups between these. Age also determined the 
+             markets. Four year colleges looks at 18-24 year olds in a 
+             121 mile radius for urban schools, 131 mile radius for 
+             suburban schools, and 181 mile radius for rural schools. 
+             Two year colleges look at 18-54 year olds in a 15 mile 
+             radius for urban schools, 31 mile radius for suburban 
+             schools, and a 34 mile radius for rural schools.
+            <br>
+            <br>
+            Variables in the data set include categorical variables for 
+            each school's id, year, FIPS code, name, two or four year 
+            category, public or private status, for profit status, and 
+            selectivity categorization per the Carnegie classifications 
+            of non-selective, selective, and more selective. Quantitative
+             variables in the set include total enrollment at each 
+             school, percent enrollment at each college of each racial 
+             group ("mcol_" variables), market percent for each racial 
+             group ("mkt_" variables), and the previously mentioned 
+             "dif_" variables for each group is the market percent minus the
+            percent enrollment</p>
+
+        <h4>Our Research Question:</h4>
+        <p><b>"What do colleges who are closing the racial overrepresentation and underrepresentation gaps at a quicker rate 
+            (2009-2017) have in common as opposed to others with constant or increasing gaps?"</b></p>
+        <h2>Methodology</h2>
+        We initially sought to determine the schools that are most rapidly closing representation gaps through using our own mathematical metric from one of six options:
+        <ol>
+            <li><b>Line of best fit using sum of difference magnitudes and compare slopes.</b></li>
+            <li>Line of best fit using mean of squared differences and compare slopes.</li>
+            <li>Establish an ideal line for ideal comparison using sum of difference magnitudes and a quadratic line type and perform regression analysis.</li>
+            <li>Establish an ideal line for ideal comparison using sum of difference magnitudes and an exponential line type and perform regression analysis.</li>
+            <li>Establish an ideal line for ideal comparison using mean of squared differences and a quadratic line type and perform regression analysis.</li>
+            <li>Establish an ideal line for ideal comparison using mean of squared differences and an exponential line type and perform regression analysis.</li>
+        </ol>
+        Once the top schools are determined, we paired our existing data data set with more variables from the Education Data Explorer 
+        API including data on instituion types and categories, cost and aid for tuition and room and board, 
+        family and student income, relgious afiliation, and other variables relating to the school
+        Begin performing correlation analyses across schools to see which common variables may be contributing to 
+        their push towards better representativeness. We then would use our finding to select variables to make a multiple regression 
+        predictive model.
+        <p>Tried using rank MD, used private public, </p>
+        <h2>Models</h2>
+        <h2>Results</h2>
+        </div>
 </body>
 </html>

@@ -1,0 +1,36 @@
+body{
+  background-color: #E5E5E0;
+  font-family: "Trade Gothic LT Pro Roman";
+  font-size: larger;
+  text-align: center;
+  color: #3E2B2E
+}
+.navbar-custom {
+  background-color: #3E2B2E;
+}
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text {
+  color: #C7AF7F;
+  font-family: "Trade Gothic LT Pro Bold No. 2";
+  font-weight: bold;
+}
+ol{
+  text-align: left;
+}
+.data-images{
+  width:  300px;
+  height: 200px;
+  object-fit: cover;
+}
+h1{
+  font-family: "SangBleu Empire Bold";
+  font-weight: bold;
+}
+h2{
+  font-family: "SangBleu Empire Bold";
+  font-weight: bold;
+}
+h4{
+  font-family: "SangBleu Empire Bold";
+  font-weight: bold;
+}
