@@ -33,6 +33,9 @@
         </nav>
         <div class="container">
         <br>
+        <h1>Racial and Ethnic Representativeness of U.S. Postsecondary Education Institutions</h1>
+        <p>A project by Emily Bogle, Keaton Strawn, Sagma Prajapati, and Bridget Erb</p>
+        <br>
         <h2>Introduction</h2>
         <p>This dataset combines public data from the Integrated 
             Postsecondary Education Data System and the 
@@ -78,11 +81,13 @@
              group ("mcol_" variables), market percent for each racial 
              group ("mkt_" variables), and the previously mentioned 
              "dif_" variables for each group is the market percent minus the
-            percent enrollment</p>
+            percent enrollment.</p>
 
         <h4>Our Research Question:</h4>
         <p><b>"What do colleges who are closing the racial overrepresentation and underrepresentation gaps at a quicker rate 
             (2009-2017) have in common as opposed to others with constant or increasing gaps?"</b></p>
+        <hr>
+        <br>
         <h2>Methodology</h2>
         We initially sought to determine the schools that are most rapidly closing representation gaps through using our own mathematical metric from one of six options:
         <ol>
@@ -95,13 +100,67 @@
         </ol>
         Once the top schools are determined, we paired our existing data data set with more variables from the Education Data Explorer 
         API including data on instituion types and categories, cost and aid for tuition and room and board, 
-        family and student income, relgious afiliation, and other variables relating to the school
-        Begin performing correlation analyses across schools to see which common variables may be contributing to 
-        their push towards better representativeness. We then would use our finding to select variables to make a multiple regression 
-        predictive model.
-        <p>Tried using rank MD, used private public, </p>
-        <h2>Models</h2>
+        family and student income, relgious afiliation, and other variables relating to the school. We then
+        began performing correlation analyses across schools to see which common variables may be contributing to 
+        their push towards better representativeness. After this, we would use our finding to select variables to make a multiple regression 
+        predictive model to see if we could determine what schools would close that gap the fastest in later years.
+        <hr>
+        <br>
+        <h2>Modeling</h2>
+        <p>In the hopes of creating more accurate multiple linear regression models, 
+        we wanted to see if there were any other variables not included within our dataset that would 
+        be useful in predicting what factors led to some schools closing their gap faster than other schools. 
+        We included data on additional variables relating to institutional characteristics, funding, costs and 
+        fees, and money distributed by schools was obtained through the 'educationdata' package in R, making 
+        calls to the Urban Institute's Education Data Explorer API. This resulted in 30 additional variables 
+        to the ones we previously had. 
+        <br>
+        <br>
+        Unfortunately, upon joining the datasets together we noticed quite a bit of missing data for a 
+        lot of the added variables. Many values missing for certain schools, and some whole years or spans of 
+        years missing. Our solution to this problem was to average across years to make a final set with one 
+        row for each school, but this still yielded quite a bit of missing data which proved to be a problem 
+        for us when it came time to make our models. 
+        <br>
+        <br>
+        Our hopes for these models were to get at least an R^2 value of 10%. We expected that we would have 
+        to do quite a bit of transformation of the variables to get a linear correlation, and then we could 
+        run ANOVA tests to determine which groups of data were statistically significant. But as stated before, 
+        the problems that we ran into when trying to accomplish this goal were largely due to missing data. But 
+        removing any of them would result in removing 54% of our data. 
+        <br>
+        <br>
+        For our qualitative variables, we did not see any significant correlations and none of the graphs 
+        produced from trying to predict the rank of a school showed linearity. We had a bit more luck with 
+        some of the categorical variables we added, but it still yielded a very low R^2. Our final model to 
+        predict rank used the variables used the private and selective variables, results for this model were 
+        as follows:
+        </p>
+        <br>
+        <img src="./images/results.jpg" class="img-fluid" alt="results of multilinear regression model">
+        <hr>
+        <br>
         <h2>Results</h2>
+        <p>
+        Our results from our model indicated that post-secondary institutions classified as private tended to 
+        have higher rankings, while more selective institutions tended to have lower rankings. While we do believe 
+        our findings are significant, we also acknowledge that there are quite a few flaws in our methodology.
+        <br>
+        <br>
+        The biggest concern we have is with our missing data. We are only measuring MD rankings each year back to 
+        2009 to 2017, so we have a very limited pool of data points to measure the rate at which each school is closing 
+        its gap. This unfortunately could not be helped, and we do wish we had more data from previous and later years to 
+        see more accurate trends.
+        <br>
+        <br>
+        Another problem we ran into was with the definition of Market Percent. In the Urban Institute report, they determined 
+        this by taking the radius surrounding the institution using the 75th percentile of the distribution. However, this 
+        radius did not expand across state lines, making schools like Princeton in New Jersey pull from a smaller pool to define 
+        their Market Percent. This also does not account for how many schools pull in students from out of state. However, it 
+        proved extremely difficult to come up with a better way of defining Market Percent, as each school is unique in its approach
+         to student recruitment. There is no monolithic way to define the Market, so we decided to use the metric we already had.
+
+        </p>
         </div>
 </body>
 </html>
